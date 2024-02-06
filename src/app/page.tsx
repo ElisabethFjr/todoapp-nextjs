@@ -1,9 +1,11 @@
-import styles from "./page.module.scss";
+import Button from "@/components/button/Button";
+import Lists from "@/components/lists/Lists";
 
 export default function Home() {
   return (
-    <main>
-      <div>ToDoApp</div>
-    </main>
+    <>
+      <Button />
+      <Lists />
+    </>
   );
 }

@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import Header from "@/components/header/Header";
+import Footer from "@/components/footer/Footer";
+import { Chivo } from "next/font/google";
 import "../styles/globals.scss";
 
-const inter = Inter({ subsets: ["latin"] });
+const chivo = Chivo({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "ToDoApp",
-  description: "ToDoApp",
+  description:
+    "ToDoApp is a task management application created with Next.js and Prisma.",
 };
 
 export default function RootLayout({
@@ -16,7 +19,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={chivo.className}>
+        <div className="container">
+          <Header />
+          <main className="main">{children}</main>
+          <Footer />
+        </div>
+      </body>
     </html>
   );
 }
