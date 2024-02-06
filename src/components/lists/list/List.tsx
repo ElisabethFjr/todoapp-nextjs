@@ -5,6 +5,7 @@ import { useState } from "react";
 import TaskInProgress from "./taskInProgress/TaskInProgress";
 import TaskDone from "./taskDone/TaskDone";
 import styles from "./List.module.scss";
+import { Palette, Pencil, XLg } from "react-bootstrap-icons";
 
 function List() {
   const [tasks, setTasks] = useState<Task[]>([
@@ -79,6 +80,17 @@ function List() {
           </ul>
         </>
       )}
+      <div className={styles.icons}>
+        <button className={styles.icon} type="button">
+          <Palette size={18} title="Options d'arrière plan" />
+        </button>
+        <button className={styles.icon} type="button">
+          <Pencil size={18} title="Editer la liste" />
+        </button>
+        <button className={styles.icon} type="button">
+          <XLg size={18} title="Supprimer la liste" />
+        </button>
+      </div>
     </article>
   );
 }

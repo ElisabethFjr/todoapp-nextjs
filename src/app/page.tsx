@@ -1,3 +1,5 @@
+"use client";
+
 import AddListButton from "@/components/addListButton/addListButton";
 import Lists from "@/components/lists/Lists";
 
