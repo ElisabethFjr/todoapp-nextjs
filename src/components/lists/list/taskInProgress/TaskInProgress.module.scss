@@ -1,0 +1,10 @@
+@import "variables";
+
+.task {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  .checkbox {
+    margin-top: 5px;
+  }
+}

@@ -1,0 +1,49 @@
+@import "variables";
+
+.card {
+  width: 238px;
+  background-color: $white;
+  border: 1px solid $black;
+  box-shadow: $shadow;
+  padding-bottom: 4rem;
+  .title {
+    border-bottom: 1px solid $black;
+    padding: 0.8rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  .tasks,
+  .completed {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.8rem;
+    // .task {
+    //   display: flex;
+    //   align-items: flex-start;
+    //   gap: 0.5rem;
+    //   .checkbox {
+    //     margin-top: 5px;
+    //   }
+    // }
+  }
+  .description {
+    padding: 0.8rem 0.8rem 0 0.8rem;
+    border-top: 1px solid $black;
+    color: $grey;
+  }
+  .reset {
+    border-top: none;
+  }
+  // .completed {
+  //   .task {
+  //     .checkbox:checked {
+  //       accent-color: $grey;
+  //     }
+  //     .label {
+  //       text-decoration: line-through;
+  //       color: $grey;
+  //     }
+  //   }
+  // }
+}

@@ -1,10 +1,10 @@
-import Button from "@/components/button/Button";
+import AddListButton from "@/components/addListButton/addListButton";
 import Lists from "@/components/lists/Lists";
 
 export default function Home() {
   return (
     <>
-      <Button />
+      <AddListButton />
       <Lists />
     </>
   );

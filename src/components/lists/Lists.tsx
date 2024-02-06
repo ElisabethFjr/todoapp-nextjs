@@ -1,12 +1,12 @@
-import { PencilSquare } from "react-bootstrap-icons";
+import NoList from "./noList/NoList";
+import List from "./list/List";
 import styles from "./Lists.module.scss";
-import Image from "next/image";
 
 function Lists() {
   return (
     <div className={styles.container}>
-      <Image src="/images/to-do-list.png" alt="Icon" width="180" height="180" />
-      <p className={styles.text}>Aucune liste enregistrée pour le moment.</p>
+      <List />
+      {/* <NoList /> */}
     </div>
   );
 }

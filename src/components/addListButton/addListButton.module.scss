@@ -16,5 +16,10 @@
     font-weight: 500;
     border: 1px solid $black;
     box-shadow: $shadow;
+    transition: all 0.3s ease-in-out;
+  }
+  .link:hover {
+    box-shadow: 2px 2px 0px black;
+    transform: translateX(2px) translateY(2px);
   }
 }
