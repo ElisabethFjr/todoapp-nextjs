@@ -1,0 +1,23 @@
+@import "variables";
+@import "mixins";
+
+.form {
+  position: absolute;
+  z-index: 99;
+  bottom: -70px;
+  background-color: $white;
+  border: 1px solid $black;
+  box-shadow: $shadow;
+  .colors {
+    display: flex;
+    padding: 0.8rem;
+    .color {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+  .submit {
+    @include visuallyHidden;
+  }
+}

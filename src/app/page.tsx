@@ -9,14 +9,15 @@ import styles from "./page.module.scss";
 export default function Home() {
   const [isOpenAddForm, setIsOpenAddForm] = useState<boolean>(false);
 
-  const handleClick = () => {
+  // hHndle Click to open the Add Form Modal
+  const handleOpenAddForm = () => {
     setIsOpenAddForm(!isOpenAddForm);
   };
 
   return (
     <>
       <div className={styles.container}>
-        <button className={styles.button} onClick={handleClick}>
+        <button className={styles.button} onClick={handleOpenAddForm}>
           <PlusCircle />
           Créer une liste
         </button>

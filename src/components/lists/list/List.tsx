@@ -6,12 +6,20 @@ import TaskInProgress from "./taskInProgress/TaskInProgress";
 import TaskDone from "./taskDone/TaskDone";
 import styles from "./List.module.scss";
 import { Palette, Pencil, XLg } from "react-bootstrap-icons";
+import PaletteColor from "@/components/modals/paletteColor/PaletteColor";
 
 function List() {
+  const [isPaletteColorOpen, setIsPaletteColorOpen] = useState<boolean>(false);
+
+  // Handle Click to toggle the PaletteColor
+  const handleOpenPaletteColor = () => {
+    setIsPaletteColorOpen(!isPaletteColorOpen);
+  };
+
   const [tasks, setTasks] = useState<Task[]>([
     {
       id: "2a8adaff-640a-4a82-92c6-92c07f49e0f9",
-      text: "Tâche 1 2a8adaff-640a-4a82-92c6-92c07f49e0f9",
+      text: "Tâche 1",
       is_completed: false,
     },
     {
@@ -26,7 +34,7 @@ function List() {
     },
   ]);
 
-  // Handle checkbox change
+  // Handle Task checkbox change
   const handleToggleTask = (taskId: string) => {
     const updatedTasks = tasks.map((task) =>
       task.id === taskId ? { ...task, is_completed: !task.is_completed } : task
@@ -81,7 +89,11 @@ function List() {
         </>
       )}
       <div className={styles.icons}>
-        <button className={styles.icon} type="button">
+        <button
+          className={`${styles.icon} ${styles.palette}`}
+          type="button"
+          onClick={handleOpenPaletteColor}
+        >
           <Palette size={18} title="Options d'arrière plan" />
         </button>
         <button className={styles.icon} type="button">
@@ -91,6 +103,9 @@ function List() {
           <XLg size={18} title="Supprimer la liste" />
         </button>
       </div>
+      {isPaletteColorOpen && (
+        <PaletteColor onSelectColor={(color) => console.log(color)} />
+      )}
     </article>
   );
 }
