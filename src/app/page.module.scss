@@ -1,13 +1,25 @@
 @import "variables";
 
-.link {
+.container {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 1.5rem;
-  gap: 0.5rem;
-  background-color: $violet;
-  font-weight: 500;
-  border: 1px solid $black;
-  box-shadow: $shadow;
+  width: 100%;
+  margin: 3rem 0;
+  .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1.5rem;
+    gap: 0.5rem;
+    background-color: $violet;
+    font-weight: 500;
+    border: 1px solid $black;
+    box-shadow: $shadow;
+    transition: all 0.3s ease-in-out;
+  }
+  .button:hover {
+    box-shadow: 2px 2px 0px black;
+    transform: translateX(2px) translateY(2px);
+  }
 }
