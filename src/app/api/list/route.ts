@@ -25,6 +25,15 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   try {
     const { title, color, tasks } = body;
+
+    // Check if color and tasks are provided in the request body
+    if (!title || !color || !tasks) {
+      return NextResponse.json(
+        { message: "Required fields." },
+        { status: 400 }
+      );
+    }
+
     const newList = await prisma.list.create({
       data: {
         title: title,
@@ -40,6 +49,7 @@ export async function POST(req: NextRequest) {
       },
       include: { tasks: true },
     });
+
     return NextResponse.json(newList);
   } catch (error) {
     console.error(error);
