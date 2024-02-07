@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   try {
     const { title, color, tasks } = body;
-    const newList: List = await prisma.list.create({
+    const newList = await prisma.list.create({
       data: {
         title: title,
         color: color,
