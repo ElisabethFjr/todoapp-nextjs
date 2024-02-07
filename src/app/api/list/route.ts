@@ -20,7 +20,7 @@ export async function GET() {
   }
 }
 
-// POST /api/list Create List
+// POST /api/list Create List with Tasks
 export async function POST(req: NextRequest) {
   const body = await req.json();
   try {
