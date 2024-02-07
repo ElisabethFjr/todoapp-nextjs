@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     const newList = await prisma.list.create({
       data: {
         title: title,
-        color: color,
+        color: color as string,
         tasks: {
           createMany: {
             data: tasks.map((task: Task) => ({
