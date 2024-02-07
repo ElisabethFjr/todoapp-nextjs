@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import { Task } from "@/@types";
+import { Task, List } from "@/@types";
 
 // GET /api/list All Lists with Tasks
 export async function GET() {
@@ -25,11 +25,20 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
   try {
     const { title, color, tasks } = body;
-    const newList = await prisma.list.create({
+    const newList: List = await prisma.list.create({
       data: {
         title: title,
         color: color,
+        tasks: {
+          createMany: {
+            data: tasks.map((task: Task) => ({
+              text: task.text,
+              is_completed: task.is_completed || false,
+            })),
+          },
+        },
       },
+      include: { tasks: true },
     });
     return NextResponse.json(newList);
   } catch (error) {
