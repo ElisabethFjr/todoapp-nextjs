@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     const newList = await prisma.list.create({
       data: {
         title: title,
-        color: color as string,
+        color: color,
         tasks: {
           createMany: {
             data: tasks.map((task: Task) => ({
@@ -40,6 +40,8 @@ export async function POST(req: NextRequest) {
       },
       include: { tasks: true },
     });
+
+    return NextResponse.json(newList);
 
     return NextResponse.json(newList);
   } catch (error) {
