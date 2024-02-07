@@ -29,20 +29,8 @@ export async function POST(req: NextRequest) {
       data: {
         title: title,
         color: color,
-        tasks: {
-          createMany: {
-            data: tasks.map((task: Task) => ({
-              text: task.text,
-              is_completed: task.is_completed || false,
-            })),
-          },
-        },
       },
-      include: { tasks: true },
     });
-
-    return NextResponse.json(newList);
-
     return NextResponse.json(newList);
   } catch (error) {
     console.error(error);

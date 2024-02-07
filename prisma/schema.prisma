@@ -11,6 +11,15 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
+model List {
+  id           String     @id @default(uuid())
+  title        String
+  color        String
+  createdAt    DateTime   @default(now()) @map(name: "created_at")
+  updatedAt    DateTime   @updatedAt @map(name: "updated_at")
+  tasks        Task[]
+}
+
 model Task {
   id           String     @id @default(uuid())
   text         String
@@ -19,13 +28,4 @@ model Task {
   updatedAt    DateTime   @updatedAt @map(name: "updated_at")
   list         List       @relation(fields: [listId], references: [id])
   listId       String
-}
-
-model List {
-  id           String     @id @default(uuid())
-  title        String
-  color        String
-  createdAt    DateTime   @default(now()) @map(name: "created_at")
-  updatedAt    DateTime   @updatedAt @map(name: "updated_at")
-  tasks        Task[]
 }
