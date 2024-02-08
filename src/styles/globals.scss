@@ -6,7 +6,7 @@ body {
   color: $black;
 }
 
-//***App Container***
+// App Container
 .container {
   display: flex;
   flex-direction: column;
@@ -15,7 +15,7 @@ body {
   min-height: 100%;
 }
 
-// ***Main***
+// Main
 .main {
   position: relative;
   display: flex;
@@ -26,4 +26,19 @@ body {
   width: 90%;
   height: 100%;
   flex-grow: 1;
+}
+
+// Input type "color"
+input[type="radio"] {
+  cursor: pointer;
+  appearance: none;
+  padding: none;
+  width: 30px;
+  height: 30px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  transition: border 0.2s ease-in-out;
+  &:hover {
+    border: 2px solid $violet;
+  }
 }

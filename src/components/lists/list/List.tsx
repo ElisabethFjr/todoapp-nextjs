@@ -88,7 +88,11 @@ function List() {
           </ul>
         </>
       )}
-      <div className={styles.icons}>
+      <div
+        className={`${styles.icons} ${
+          isPaletteColorOpen ? styles.selected : ""
+        }`}
+      >
         <button
           className={`${styles.icon} ${styles.palette}`}
           type="button"

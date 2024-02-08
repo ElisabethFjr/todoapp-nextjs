@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { nanoid } from "nanoid";
 import ModalContainer from "../modalContainer/ModalContainer";
-import { App, Plus, Square } from "react-bootstrap-icons";
+import { Plus, Square } from "react-bootstrap-icons";
 import styles from "./AddListForm.module.scss";
 
 interface AddListFormProps {
@@ -70,8 +71,8 @@ function AddListForm({ closeModal }: AddListFormProps) {
         </div>
       </form>
       <ul className={styles.list}>
-        {tasks.map((task, index) => (
-          <li className={styles.elem} key={index}>
+        {tasks.map((task) => (
+          <li className={styles.elem} key={nanoid()}>
             <Square size={13} />
             {task}
           </li>

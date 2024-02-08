@@ -6,7 +6,7 @@
   background-color: $white;
   border: 1px solid $black;
   box-shadow: $shadow;
-  padding-bottom: 4rem;
+  padding-bottom: 5rem;
   &:hover {
     .icons {
       opacity: 1;
@@ -51,6 +51,7 @@
   .icon {
     cursor: pointer;
     padding: 0.5rem;
+    background-color: $greylight;
     border: 1px solid transparent;
     border-radius: 50%;
     transition: all 0.3s ease-in-out;
@@ -61,5 +62,19 @@
   }
   .icon.palette {
     position: relative;
+  }
+}
+
+.icons.selected {
+  opacity: 1;
+  .icon {
+    &:hover {
+      box-shadow: 3px 3px 0px $black;
+      background-color: $violet;
+    }
+  }
+  .icon.palette {
+    box-shadow: 3px 3px 0px $black;
+    background-color: $violet;
   }
 }
