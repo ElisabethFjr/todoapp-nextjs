@@ -3,10 +3,9 @@
 .task {
   position: relative;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.5rem;
   .checkbox {
-    margin-top: 5px;
     z-index: 1;
   }
   .check {
