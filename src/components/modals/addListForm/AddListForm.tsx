@@ -61,8 +61,8 @@ function AddListForm({ closeModal }: AddListFormProps) {
     setTaskValue("");
   };
 
-  // Enter key press move focus to task input
-  const handleTitleKeyPress = (
+  // Focus task input when Enter key pressed
+  const handleEnterPressFocusTask = (
     event: React.KeyboardEvent<HTMLInputElement>
   ) => {
     if (event.key === "Enter") {
@@ -73,8 +73,10 @@ function AddListForm({ closeModal }: AddListFormProps) {
     }
   };
 
-  // Enter key press call the function to add a new task
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  // Add a new task when Enter key pressed
+  const handleEnterPressAddTask = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
     if (event.key === "Enter") {
       event.preventDefault();
       handleAddTask();
@@ -108,7 +110,7 @@ function AddListForm({ closeModal }: AddListFormProps) {
             placeholder="Titre"
             value={title}
             onChange={handleTitleChange}
-            onKeyDown={handleTitleKeyPress} // Handle Enter key press for title input
+            onKeyDown={handleEnterPressFocusTask} // Handle Enter key press to move focus to task input
             required
           />
         </div>
@@ -126,11 +128,10 @@ function AddListForm({ closeModal }: AddListFormProps) {
             placeholder="Nouvelle tâche"
             value={taskValue}
             onChange={handleTaskChange}
-            onKeyDown={handleKeyPress} // Handle Enter key press for task input
+            onKeyDown={handleEnterPressAddTask} // Handle Enter key press to add a new task in the list
           />
-          <button className={styles.submit} type="submit" />
         </div>
-        {/* Tasks List Section */}
+        {/* Tasks List Section + Edit/Delete task */}
         <ul className={styles.list}>
           {tasks.map((task) => (
             <li className={styles.elem} key={task.id}>
@@ -140,8 +141,8 @@ function AddListForm({ closeModal }: AddListFormProps) {
                 type="text"
                 value={task.text}
                 onChange={(e) => handleTaskTextChange(task.id, e.target.value)}
+                onKeyDown={handleEnterPressFocusTask}
               />
-              <button className={styles.submit} type="button" />
               <button
                 type="button"
                 className={styles.close}
@@ -155,7 +156,7 @@ function AddListForm({ closeModal }: AddListFormProps) {
             </li>
           ))}
         </ul>
-        {/* Form Submission Section */}
+        {/* Button Form Submission */}
         <button className={styles.button} type="submit">
           Créer
         </button>

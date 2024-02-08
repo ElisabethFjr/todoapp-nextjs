@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ModalContainer from "../modalContainer/ModalContainer";
 import { GripVertical, Plus, XLg } from "react-bootstrap-icons";
@@ -12,42 +12,45 @@ interface EditListFormProps {
 }
 
 function EditListForm({ list, updateListData, closeModal }: EditListFormProps) {
+  //---VARIABLES----
+  // Declaration states
   const [isOpen, setIsOpen] = useState<boolean>(true);
-  const [title, setTitle] = useState<string>(list.title);
+  const [title, setTitle] = useState<string>("");
   const [taskValue, setTaskValue] = useState<string>("");
-  const [tasks, setTasks] = useState<Task[]>(list.tasks);
+  const [tasks, setTasks] = useState<Task[]>([]);
 
-  // Handle Change title value
+  // Declaration task input ref
+  const taskInputRef = useRef<HTMLInputElement>(null); // Ref for task input
+
+  //---HANDLING FUNCTIONS----
+  // Handle Change title input value
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  // Handle Change task value
+  // Handle Change task input value
   const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskValue(event.target.value);
   };
 
-  // Handle Edit created task text value
+  // Handle Edit text of a created task
   const handleTaskTextChange = (id: string, newText: string) => {
     setTasks((prevTasks) =>
-      prevTasks.map(
-        (task) => (task.id === id ? { ...task, text: newText } : task) // If id matching with id parameter, update the task with new text
+      prevTasks.map((task) =>
+        task.id === id ? { ...task, text: newText } : task
       )
     );
   };
 
-  // Handle Delete task from the task[]
+  // Handle Delete a task from the list
   const handleDeleteTask = (id: string) => {
-    // Filter tasks to delete the task with the specified id
     const updatedTasks = tasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
   };
 
-  // Handle Submit form
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    console.log("Envoyé!");
-    event.preventDefault();
-    if (!taskValue.trim()) return; // Prevent adding empty tasks
+  // Handle Add a new task in the list
+  const handleAddTask = () => {
+    if (!taskValue.trim()) return;
     const newTask: Task = {
       id: uuidv4(),
       text: taskValue,
@@ -55,19 +58,39 @@ function EditListForm({ list, updateListData, closeModal }: EditListFormProps) {
     };
     const updatedTasks = [...tasks, newTask];
     setTasks(updatedTasks);
-    updateListData((prevLists) =>
-      prevLists.map((prevList) =>
-        prevList.id === list.id
-          ? { ...prevList, title, tasks: updatedTasks }
-          : prevList
-      )
-    );
-    setTitle(""); // Reset the title input field after submission
-    setTaskValue(""); // Reset the task input field after submission
-    closeModal(true); // Close the modal after submission
+    setTaskValue("");
   };
 
-  // Handle Close modal
+  // Focus task input when Enter key pressed
+  const handleEnterPressFocusTask = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (taskInputRef.current) {
+        taskInputRef.current.focus();
+      }
+    }
+  };
+
+  // Add a new task when Enter key pressed
+  const handleEnterPressAddTask = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleAddTask();
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setTitle("");
+    closeModal(true);
+  };
+
+  // Handle closing modal
   const handleClose = () => {
     setIsOpen(!isOpen);
     closeModal(true);
@@ -76,7 +99,7 @@ function EditListForm({ list, updateListData, closeModal }: EditListFormProps) {
   return (
     <ModalContainer handleClose={handleClose} color={list.color}>
       <form className={styles.form} onSubmit={handleSubmit}>
-        {/* Edit Title section */}
+        {/* Edit Title Section */}
         <div className={styles.title}>
           <label className={styles.label} htmlFor="title" />
           <input
@@ -87,6 +110,7 @@ function EditListForm({ list, updateListData, closeModal }: EditListFormProps) {
             placeholder="Titre"
             value={title}
             onChange={handleTitleChange}
+            onKeyDown={handleEnterPressFocusTask} // Handle Enter key press to move focus to task input
             required
           />
         </div>
@@ -103,8 +127,8 @@ function EditListForm({ list, updateListData, closeModal }: EditListFormProps) {
             placeholder="Nouvelle tâche"
             value={taskValue}
             onChange={handleTaskChange}
+            onKeyDown={handleEnterPressAddTask} // Handle Enter key press to add a new task in the list
           />
-          <button className={styles.submit} type="submit" />
         </div>
         {/* Tasks list section + Edit/Delete task */}
         <ul className={styles.list}>
@@ -117,7 +141,6 @@ function EditListForm({ list, updateListData, closeModal }: EditListFormProps) {
                 value={task.text}
                 onChange={(e) => handleTaskTextChange(task.id, e.target.value)}
               />
-              <button className={styles.submit} type="submit" />
               <button
                 type="button"
                 className={styles.close}
