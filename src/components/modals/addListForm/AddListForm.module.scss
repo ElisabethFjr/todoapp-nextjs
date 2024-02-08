@@ -6,6 +6,7 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
+
   .title {
     font-size: 1.1rem;
     font-weight: 600;
@@ -23,23 +24,22 @@
       }
     }
   }
+
   .tasks {
     display: flex;
     align-items: center;
-    padding-left: 1.2rem;
+    gap: 0.6rem;
+    padding-left: 1.6rem;
     border-bottom: 1px solid $black;
     height: 100%;
     .input {
       width: 100%;
       height: 100%;
-      padding: 0.8rem;
+      padding: 0.8rem 0;
       border: none;
       &:focus {
         outline: none;
       }
-    }
-    .submit {
-      @include visuallyHidden;
     }
   }
 }
@@ -48,11 +48,40 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 0.8rem 0.8rem 3rem 1.4rem;
+  padding: 0.8rem 0.8rem 3rem 1.8rem;
   .elem {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    .checkbox {
+      cursor: default;
+    }
+    .text {
+      outline: none;
+      width: 100%;
+    }
+    &:hover {
+      .close,
+      .grip {
+        opacity: 1;
+      }
+    }
+  }
+  .close {
+    opacity: 0;
+    padding: 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    transition: background-color 0.3s ease-in-out;
+    &:hover {
+      background-color: $greylight;
+    }
+  }
+  .grip {
+    position: absolute;
+    left: -20px;
+    opacity: 0;
   }
 }
 
@@ -72,4 +101,8 @@
 .button:hover {
   box-shadow: 2px 2px 0px black;
   transform: translateX(2px) translateY(2px);
+}
+
+.submit {
+  @include visuallyHidden;
 }

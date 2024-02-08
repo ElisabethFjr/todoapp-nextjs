@@ -13,7 +13,7 @@ function ModalContainer({ children, handleClose }: ModalContainerProps) {
         {children}
         <button
           type="button"
-          className={styles.button}
+          className={styles.close}
           onClick={handleClose}
           aria-label="Fermer la modale"
           title="Fermer"

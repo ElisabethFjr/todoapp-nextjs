@@ -6,5 +6,8 @@
   gap: 0.5rem;
   .checkbox {
     margin-top: 5px;
+    &:hover {
+      border: 2px solid $black;
+    }
   }
 }
