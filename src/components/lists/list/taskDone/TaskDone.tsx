@@ -1,5 +1,6 @@
 import { Task } from "@/@types";
 import styles from "./TaskDone.module.scss";
+import { Check } from "react-bootstrap-icons";
 
 interface TaskDoneProps {
   task: Task;
@@ -19,6 +20,7 @@ function TaskDone({ task, handleToggleTask }: TaskDoneProps) {
       <label className={styles.label} htmlFor={task.id}>
         {task.text}
       </label>
+      <Check className={styles.check} color="#5f6368" size={14} />
     </li>
   );
 }

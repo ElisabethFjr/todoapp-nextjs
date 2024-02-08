@@ -1,14 +1,19 @@
 @import "variables";
 
 .task {
+  position: relative;
   display: flex;
   align-items: flex-start;
   gap: 0.5rem;
   .checkbox {
     margin-top: 5px;
+    z-index: 1;
   }
-  .checkbox:checked {
-    accent-color: $grey;
+  .check {
+    position: absolute;
+    top: 4px;
+    left: -1px;
+    z-index: 0;
   }
   .label {
     text-decoration: line-through;

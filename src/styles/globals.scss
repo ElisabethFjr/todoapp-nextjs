@@ -28,7 +28,26 @@ body {
   flex-grow: 1;
 }
 
-// Input type "color"
+// Input type "checkbox"
+input[type="checkbox"] {
+  cursor: pointer;
+  appearance: none;
+  padding: none;
+  width: 12px;
+  height: 12px;
+  border: 1px solid $black;
+  transition: border 0.2s ease-in-out;
+  &:hover {
+    border: 2px solid $black;
+  }
+  &:checked {
+    accent-color: $grey;
+    color: $grey;
+    border: 2px solid $grey;
+  }
+}
+
+// Input type "radio" for the PaletteColor
 input[type="radio"] {
   cursor: pointer;
   appearance: none;
