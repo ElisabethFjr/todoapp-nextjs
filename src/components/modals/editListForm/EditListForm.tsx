@@ -83,6 +83,13 @@ function EditListForm({ list, updateListData, closeModal }: EditListFormProps) {
     }
   };
 
+  // Handle PreventDefault Form on key press "Enter"
+  const handleFormKeyPress = (event: React.KeyboardEvent<HTMLFormElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
   // Handle form submission
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -98,7 +105,11 @@ function EditListForm({ list, updateListData, closeModal }: EditListFormProps) {
 
   return (
     <ModalContainer handleClose={handleClose} color={list.color}>
-      <form className={styles.form} onSubmit={handleSubmit}>
+      <form
+        className={styles.form}
+        onSubmit={handleSubmit}
+        onKeyDown={handleFormKeyPress}
+      >
         {/* Edit Title Section */}
         <div className={styles.title}>
           <label className={styles.label} htmlFor="title" />
