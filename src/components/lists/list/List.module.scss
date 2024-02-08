@@ -51,13 +51,11 @@
   .icon {
     cursor: pointer;
     padding: 0.5rem;
-    background-color: $greylight;
     border: 1px solid transparent;
     border-radius: 50%;
     transition: all 0.3s ease-in-out;
     &:hover {
-      box-shadow: 3px 3px 0px $black;
-      background-color: $violet;
+      background-color: $greylight;
     }
   }
   .icon.palette {
@@ -69,12 +67,10 @@
   opacity: 1;
   .icon {
     &:hover {
-      box-shadow: 3px 3px 0px $black;
-      background-color: $violet;
+      background-color: $greylight;
     }
   }
   .icon.palette {
-    box-shadow: 3px 3px 0px $black;
     background-color: $violet;
   }
 }
