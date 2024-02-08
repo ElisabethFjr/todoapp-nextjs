@@ -16,15 +16,16 @@ const colors = [
 
 interface PaletteColorProps {
   onSelectColor: (color: string) => void;
+  selectedColor: string;
 }
 
-function PaletteColor({ onSelectColor }: PaletteColorProps) {
-  const [selectedColor, setSelectedColor] = useState<string>("#ffffff");
+function PaletteColor({ onSelectColor, selectedColor }: PaletteColorProps) {
+  const [selected, setSelected] = useState<string>(selectedColor);
 
   const handleColorChange = (color: string) => {
-    setSelectedColor(color);
+    setSelected(color);
+    onSelectColor(color);
   };
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSelectColor(selectedColor);
@@ -43,8 +44,9 @@ function PaletteColor({ onSelectColor }: PaletteColorProps) {
               name="color"
               type="radio"
               value={color.color}
-              onChange={() => handleColorChange}
+              onChange={() => handleColorChange(color.color)}
               style={{ backgroundColor: color.color }}
+              checked={selected === color.color}
             />
             {selectedColor === color.color && (
               <CheckCircleFill

@@ -10,10 +10,16 @@ import PaletteColor from "@/components/modals/paletteColor/PaletteColor";
 
 function List() {
   const [isPaletteColorOpen, setIsPaletteColorOpen] = useState<boolean>(false);
+  const [selectedColor, setSelectedColor] = useState<string>("#ffffff");
 
   // Handle Click to toggle the PaletteColor
   const handleOpenPaletteColor = () => {
     setIsPaletteColorOpen(!isPaletteColorOpen);
+  };
+
+  // Handle Click to select color in the PaletteColor
+  const handleSelectColor = (color: string) => {
+    setSelectedColor(color);
   };
 
   const [tasks, setTasks] = useState<Task[]>([
@@ -51,7 +57,7 @@ function List() {
     completedTasksCount === 1 ? "tâche terminée" : "tâches terminées"; // Determine the appropriate text based on the number of completed tasks
 
   return (
-    <article className={styles.card}>
+    <article className={styles.card} style={{ backgroundColor: selectedColor }}>
       <h2 className={styles.title}>Titre de la liste</h2>
       {/* Display all tasks in progress */}
       {inProgressTasks.length > 0 && (
@@ -108,7 +114,10 @@ function List() {
         </button>
       </div>
       {isPaletteColorOpen && (
-        <PaletteColor onSelectColor={(color) => console.log(color)} />
+        <PaletteColor
+          onSelectColor={handleSelectColor}
+          selectedColor={selectedColor}
+        />
       )}
     </article>
   );
