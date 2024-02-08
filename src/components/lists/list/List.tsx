@@ -1,44 +1,40 @@
 "use client";
 
-import { Task } from "@/@types";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { List, Task } from "@/@types";
 import TaskInProgress from "./taskInProgress/TaskInProgress";
 import TaskDone from "./taskDone/TaskDone";
-import styles from "./List.module.scss";
-import { Palette, Pencil, XLg } from "react-bootstrap-icons";
 import PaletteColor from "@/components/modals/paletteColor/PaletteColor";
+import EditListForm from "@/components/modals/editListForm/EditListForm";
+import { Palette, Pencil, XLg } from "react-bootstrap-icons";
+import styles from "./List.module.scss";
 
-function List() {
-  const [isPaletteColorOpen, setIsPaletteColorOpen] = useState<boolean>(false);
+interface ListProps {
+  list: List;
+  setListData: Dispatch<SetStateAction<List[]>>;
+}
+
+function List({ list, setListData }: ListProps) {
+  const [tasks, setTasks] = useState<Task[]>(list.tasks);
+  const [isOpenEditListModal, setIsOpenEditListModal] =
+    useState<boolean>(false);
+  const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>("#ffffff");
+
+  // Handle Click to toggle the EditListForm modal
+  const handleOpenEditModal = () => {
+    setIsOpenEditListModal(!isOpenEditListModal);
+  };
 
   // Handle Click to toggle the PaletteColor
   const handleOpenPaletteColor = () => {
-    setIsPaletteColorOpen(!isPaletteColorOpen);
+    setIsOpenPaletteColor(!isOpenPaletteColor);
   };
 
   // Handle Click to select color in the PaletteColor
   const handleSelectColor = (color: string) => {
     setSelectedColor(color);
   };
-
-  const [tasks, setTasks] = useState<Task[]>([
-    {
-      id: "2a8adaff-640a-4a82-92c6-92c07f49e0f9",
-      text: "Tâche 1",
-      is_completed: false,
-    },
-    {
-      id: "ace99104-674e-46b6-b2e8-eb1809e27f90",
-      text: "Tâche 2",
-      is_completed: false,
-    },
-    {
-      id: "8d5c31f5-7eb7-4340-a70b-7bb80f708376",
-      text: "Tâche 3",
-      is_completed: false,
-    },
-  ]);
 
   // Handle Task checkbox change
   const handleToggleTask = (taskId: string) => {
@@ -58,7 +54,7 @@ function List() {
 
   return (
     <article className={styles.card} style={{ backgroundColor: selectedColor }}>
-      <h2 className={styles.title}>Titre de la liste</h2>
+      <h2 className={styles.title}>{list.title}</h2>
       {/* Display all tasks in progress */}
       {inProgressTasks.length > 0 && (
         <ul className={styles.tasks}>
@@ -96,7 +92,7 @@ function List() {
       )}
       <div
         className={`${styles.icons} ${
-          isPaletteColorOpen ? styles.selected : ""
+          isOpenPaletteColor ? styles.selected : ""
         }`}
       >
         <button
@@ -106,17 +102,28 @@ function List() {
         >
           <Palette size={18} title="Options d'arrière plan" />
         </button>
-        <button className={styles.icon} type="button">
+        <button
+          className={styles.icon}
+          type="button"
+          onClick={handleOpenEditModal}
+        >
           <Pencil size={18} title="Editer la liste" />
         </button>
         <button className={styles.icon} type="button">
           <XLg size={18} title="Supprimer la liste" />
         </button>
       </div>
-      {isPaletteColorOpen && (
+      {isOpenPaletteColor && (
         <PaletteColor
           onSelectColor={handleSelectColor}
           selectedColor={selectedColor}
+        />
+      )}
+      {isOpenEditListModal && (
+        <EditListForm
+          list={list}
+          updateListData={setListData}
+          closeModal={() => setIsOpenEditListModal(false)}
         />
       )}
     </article>

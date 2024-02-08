@@ -7,11 +7,11 @@ import { PlusCircle } from "react-bootstrap-icons";
 import styles from "./page.module.scss";
 
 export default function Home() {
-  const [isOpenAddForm, setIsOpenAddForm] = useState<boolean>(false);
+  const [isOpenAddListModal, setIsOpenAddListModal] = useState<boolean>(false);
 
   // hHndle Click to open the Add Form Modal
   const handleOpenAddForm = () => {
-    setIsOpenAddForm(!isOpenAddForm);
+    setIsOpenAddListModal(!isOpenAddListModal);
   };
 
   return (
@@ -23,9 +23,9 @@ export default function Home() {
         </button>
       </div>
       <Lists />
-      {isOpenAddForm ? (
-        <AddListForm closeModal={() => setIsOpenAddForm(false)} />
-      ) : null}
+      {isOpenAddListModal && (
+        <AddListForm closeModal={() => setIsOpenAddListModal(false)} />
+      )}
     </>
   );
 }

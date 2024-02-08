@@ -1,10 +1,4 @@
-import NoList from "./noList/NoList";
-import List from "./list/List";
-import styles from "./Lists.module.scss";
-import { useState } from "react";
-import { List as ListType } from "@/@types";
-
-const initialListsData = [
+export const listsData = [
   {
     id: "4576ee5b-917c-4f54-b791-e89f225f41de",
     title: "Liste 1",
@@ -50,25 +44,3 @@ const initialListsData = [
     ],
   },
 ];
-
-function Lists() {
-  const [listsData, setListsData] = useState<List[]>(initialListsData);
-  return (
-    <div className={styles.container}>
-      {/* Lists or Nolist */}
-      {listsData.length > 0 ? (
-        <div className={styles.lists}>
-          {listsData.map((list: ListType) => (
-            <List key={list.id} list={list} setListData={setListsData} />
-          ))}
-        </div>
-      ) : (
-        <div className={styles.nolist}>
-          <NoList />
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default Lists;
