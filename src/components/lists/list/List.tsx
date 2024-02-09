@@ -19,7 +19,7 @@ function List({ list, setListData }: ListProps) {
   const [isOpenEditListModal, setIsOpenEditListModal] =
     useState<boolean>(false);
   const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
-  const [selectedColor, setSelectedColor] = useState<string>("#ffffff");
+  const [selectedColor, setSelectedColor] = useState<string>("");
 
   // Handle Click to toggle the EditListForm modal
   const handleOpenEditModal = () => {
@@ -53,7 +53,10 @@ function List({ list, setListData }: ListProps) {
     completedTasksCount === 1 ? "tâche terminée" : "tâches terminées"; // Determine the appropriate text based on the number of completed tasks
 
   return (
-    <article className={styles.card} style={{ backgroundColor: selectedColor }}>
+    <article
+      className={styles.card}
+      style={{ backgroundColor: selectedColor ? selectedColor : list.color }}
+    >
       <h2 className={styles.title}>{list.title}</h2>
       {/* Display all tasks in progress */}
       {inProgressTasks.length > 0 && (

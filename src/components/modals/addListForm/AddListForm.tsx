@@ -16,8 +16,9 @@ function AddListForm({ closeModal }: AddListFormProps) {
   // Declaration states
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [title, setTitle] = useState<string>("");
-  const [taskValue, setTaskValue] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [taskValue, setTaskValue] = useState<string>("");
+  const color = "#ffffff";
 
   // Declaration task input ref
   const taskInputRef = useRef<HTMLInputElement>(null);
@@ -93,8 +94,15 @@ function AddListForm({ closeModal }: AddListFormProps) {
   // Handle form submission
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("Envoyé!");
+    const newList = {
+      title: title,
+      color: color,
+      tasks: tasks,
+    };
+    console.log("Liste créée:", newList);
+    // Reset the form
     setTitle("");
+    setTasks([]);
     closeModal(true);
   };
 
