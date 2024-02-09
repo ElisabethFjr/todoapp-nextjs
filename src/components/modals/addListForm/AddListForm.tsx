@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import DOMPurify from "dompurify";
 import ModalContainer from "../modalContainer/ModalContainer";
 import { GripVertical, Plus, XLg } from "react-bootstrap-icons";
 import { Task } from "@/@types";
@@ -18,7 +19,6 @@ function AddListForm({ closeModal }: AddListFormProps) {
   const [title, setTitle] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskValue, setTaskValue] = useState<string>("");
-  const color = "#ffffff";
 
   // Declaration task input ref
   const taskInputRef = useRef<HTMLInputElement>(null);
@@ -26,19 +26,22 @@ function AddListForm({ closeModal }: AddListFormProps) {
   //---HANDLING FUNCTIONS----
   // Handle Change title input value
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
+    const sanitizedValue = DOMPurify.sanitize(event.target.value);
+    setTitle(sanitizedValue);
   };
 
   // Handle Change task input value
   const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskValue(event.target.value);
+    const sanitizedValue = DOMPurify.sanitize(event.target.value);
+    setTaskValue(sanitizedValue);
   };
 
   // Handle Edit text of a created task
   const handleTaskTextChange = (id: string, newText: string) => {
+    const sanitizedText = DOMPurify.sanitize(newText);
     setTasks((prevTasks) =>
       prevTasks.map((task) =>
-        task.id === id ? { ...task, text: newText } : task
+        task.id === id ? { ...task, text: sanitizedText } : task
       )
     );
   };
@@ -94,12 +97,18 @@ function AddListForm({ closeModal }: AddListFormProps) {
   // Handle form submission
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const newList = {
+    const formData = new FormData(event.currentTarget);
+    const title = formData.get("title") as string;
+    let tasksArray: string[] = [];
+    if (tasks && tasks.length > 0) {
+      tasksArray = tasks.map((task) => task.text);
+    }
+
+    const formDataJSON = JSON.stringify({
       title: title,
-      color: color,
-      tasks: tasks,
-    };
-    console.log("Liste créée:", newList);
+      tasks: tasksArray.length > 0 ? tasksArray : null,
+    });
+    console.log(formDataJSON);
     // Reset the form
     setTitle("");
     setTasks([]);
