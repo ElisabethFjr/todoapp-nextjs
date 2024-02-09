@@ -26,7 +26,8 @@
     }
   }
 
-  .tasks {
+  // Add Task section
+  .addtask {
     display: flex;
     align-items: center;
     gap: 0.6rem;
@@ -44,12 +45,13 @@
     }
   }
 
-  .list {
+  // Created Task Section
+  .tasks {
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 0.8rem 0.8rem 3rem 1.8rem;
-    .elem {
+    .task {
       position: relative;
       display: flex;
       align-items: center;
@@ -62,13 +64,13 @@
         width: 100%;
       }
       &:hover {
-        .close,
+        .delete,
         .grip {
           opacity: 1;
         }
       }
     }
-    .close {
+    .delete {
       opacity: 0;
       padding: 0.5rem;
       border: 1px solid transparent;

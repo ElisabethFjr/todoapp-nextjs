@@ -3,7 +3,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { List, Task } from "@/@types";
 import TaskInProgress from "./taskInProgress/TaskInProgress";
-import TaskDone from "./taskDone/TaskDone";
+import TaskCompleted from "./taskCompleted/TaskCompleted";
 import PaletteColor from "@/components/modals/paletteColor/PaletteColor";
 import EditListForm from "@/components/modals/editListForm/EditListForm";
 import { Palette, Pencil, XLg } from "react-bootstrap-icons";
@@ -73,9 +73,9 @@ function List({ list, setListData }: ListProps) {
     setTasks(updatedTasks);
   };
 
-  // Filter Undone Tasks
+  // Filter In Progress Tasks
   const inProgressTasks = tasks.filter((task) => !task.is_completed);
-  // Filter Done Tasks
+  // Filter Completed Tasks
   const completedTasks = tasks.filter((task) => task.is_completed);
   const completedTasksCount = completedTasks.length; // Get the number of completed tasks
   const completedTasksText =
@@ -86,10 +86,11 @@ function List({ list, setListData }: ListProps) {
       className={styles.card}
       style={{ backgroundColor: selectedColor ? selectedColor : list.color }}
     >
+      {/* Title Section */}
       <h2 className={styles.title}>{list.title}</h2>
-      {/* Display all tasks in progress */}
+      {/* In Progress Task Section */}
       {inProgressTasks.length > 0 && (
-        <ul className={styles.tasks}>
+        <ul className={styles.inprogress}>
           {inProgressTasks.map((task: Task) => (
             <TaskInProgress
               key={task.id}
@@ -99,7 +100,7 @@ function List({ list, setListData }: ListProps) {
           ))}
         </ul>
       )}
-      {/* Display all completed tasks */}
+      {/* Completed Task Section */}
       {completedTasks.length > 0 && (
         <>
           <p
@@ -113,7 +114,7 @@ function List({ list, setListData }: ListProps) {
           </p>
           <ul className={styles.completed}>
             {completedTasks.map((task: Task) => (
-              <TaskDone
+              <TaskCompleted
                 key={task.id}
                 task={task}
                 handleToggleTask={handleToggleTask}
@@ -145,6 +146,7 @@ function List({ list, setListData }: ListProps) {
           <XLg size={18} title="Supprimer la liste" />
         </button>
       </div>
+      {/* Modals */}
       {isOpenPaletteColor && (
         <PaletteColor
           onSelectColor={handleSelectColor}

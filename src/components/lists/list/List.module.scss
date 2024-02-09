@@ -13,13 +13,16 @@
     }
   }
 
+  // Title Section
   .title {
     border-bottom: 1px solid $black;
     padding: 0.8rem;
     font-size: 1.1rem;
     font-weight: 600;
   }
-  .tasks,
+
+  // InProgress & Completed Section
+  .inprogress,
   .completed {
     display: flex;
     flex-direction: column;
@@ -36,6 +39,7 @@
   }
 }
 
+// Hover Icons
 .icons {
   position: absolute;
   z-index: 2;
@@ -62,7 +66,6 @@
     position: relative;
   }
 }
-
 .icons.selected {
   opacity: 1;
   .icon {

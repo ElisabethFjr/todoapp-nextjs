@@ -1,13 +1,13 @@
 import { Task } from "@/@types";
-import styles from "./TaskDone.module.scss";
+import styles from "./TaskCompleted.module.scss";
 import { Check } from "react-bootstrap-icons";
 
-interface TaskDoneProps {
+interface TaskCompletedProps {
   task: Task;
   handleToggleTask: (taskId: string) => void;
 }
 
-function TaskDone({ task, handleToggleTask }: TaskDoneProps) {
+function TasCompleted({ task, handleToggleTask }: TaskCompletedProps) {
   return (
     <li className={styles.task} key={task.id}>
       <input
@@ -20,9 +20,9 @@ function TaskDone({ task, handleToggleTask }: TaskDoneProps) {
       <label className={styles.label} htmlFor={task.id}>
         {task.text}
       </label>
-      <Check className={styles.check} color="#5f6368" size={14} />
+      <Check className={styles.check} color="#5f6368" size={15} />
     </li>
   );
 }
 
-export default TaskDone;
+export default TasCompleted;

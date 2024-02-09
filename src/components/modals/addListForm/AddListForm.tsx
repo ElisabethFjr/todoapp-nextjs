@@ -135,7 +135,7 @@ function AddListForm({ closeModal }: AddListFormProps) {
           />
         </div>
         {/* Add Task Section */}
-        <div className={styles.tasks}>
+        <div className={styles.addtask}>
           <label className={styles.label} htmlFor="task">
             <Plus />
           </label>
@@ -152,9 +152,9 @@ function AddListForm({ closeModal }: AddListFormProps) {
           />
         </div>
         {/* Tasks List Section + Edit/Delete task */}
-        <ul className={styles.list}>
+        <ul className={styles.tasks}>
           {tasks.map((task) => (
-            <li className={styles.elem} key={task.id}>
+            <li className={styles.task} key={task.id}>
               <input className={styles.checkbox} type="checkbox" disabled />
               <input
                 className={styles.text}
@@ -164,7 +164,7 @@ function AddListForm({ closeModal }: AddListFormProps) {
               />
               <button
                 type="button"
-                className={styles.close}
+                className={styles.delete}
                 onClick={() => handleDeleteTask(task.id)}
                 aria-label="Supprimer la tâche"
                 title="Supprimer"

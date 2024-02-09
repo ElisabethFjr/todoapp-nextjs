@@ -7,6 +7,7 @@
   width: 100%;
   height: 100%;
 
+  // Edit Title Section
   .title {
     font-size: 1.1rem;
     font-weight: 600;
@@ -25,13 +26,13 @@
     }
   }
 
-  .tasks {
+  // Add Tasks Section
+  .addtask {
     display: flex;
     align-items: center;
     gap: 0.6rem;
     padding-left: 1.6rem;
     border-bottom: 1px solid $black;
-    height: 100%;
     .input {
       width: 100%;
       height: 100%;
@@ -43,44 +44,86 @@
     }
   }
 
-  .list {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 0.8rem 0.8rem 3rem 1.8rem;
-    .elem {
-      position: relative;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      .text {
-        outline: none;
-        width: 100%;
-      }
-      &:hover {
-        .close,
-        .grip {
-          opacity: 1;
+  // Edit In Progress Tasks Section
+  .inprogress,
+  .completed {
+    .tasks {
+      flex-direction: column;
+      padding: 0.8rem 0.8rem 0.8rem 1.8rem;
+      .task {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        .checkbox {
+          &:hover {
+            border: 2px solid $black;
+          }
+        }
+        .text {
+          outline: none;
+          width: 100%;
+        }
+        &:hover {
+          .delete,
+          .grip {
+            opacity: 1;
+          }
         }
       }
-    }
-    .close {
-      opacity: 0;
-      padding: 0.5rem;
-      border: 1px solid transparent;
-      border-radius: 50%;
-      transition: background-color 0.3s ease-in-out;
-      &:hover {
-        background-color: $greylight;
+      .delete {
+        opacity: 0;
+        padding: 0.5rem;
+        border: 1px solid transparent;
+        border-radius: 50%;
+        transition: background-color 0.3s ease-in-out;
+        &:hover {
+          background-color: $iconHover;
+        }
       }
-    }
-    .grip {
-      position: absolute;
-      left: -20px;
-      opacity: 0;
+      .grip {
+        position: absolute;
+        left: -20px;
+        opacity: 0;
+      }
     }
   }
 
+  // Edit Completed Tasks Section
+  .completed {
+    padding: 0.8rem 0;
+    border-top: 1px solid $black;
+    color: $grey;
+    &.reset {
+      border-top: none;
+    }
+    .description {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding-left: 1.6rem;
+    }
+    .tasks {
+      padding: 0.2rem 0.8rem 0.8rem 1.8rem;
+      .task {
+        position: relative;
+        .text {
+          text-decoration: line-through;
+        }
+        .checkbox {
+          z-index: 1;
+        }
+        .check {
+          position: absolute;
+          top: 9px;
+          left: -2px;
+          z-index: 0;
+        }
+      }
+    }
+  }
+
+  // Button Form Submission
   .button {
     display: flex;
     justify-content: center;
@@ -88,6 +131,7 @@
     gap: 0.5rem;
     padding: 0.5rem 1.5rem;
     margin-bottom: 2rem;
+    margin-top: 2rem;
     margin-left: auto;
     margin-right: auto;
     width: fit-content;

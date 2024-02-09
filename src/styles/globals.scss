@@ -33,14 +33,14 @@ input[type="checkbox"] {
   cursor: pointer;
   appearance: none;
   padding: none;
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   border: 1px solid $black;
   transition: border 0.2s ease-in-out;
   &:checked {
     accent-color: $grey;
     color: $grey;
-    border: 2px solid $grey;
+    border-color: $grey;
   }
 }
 
