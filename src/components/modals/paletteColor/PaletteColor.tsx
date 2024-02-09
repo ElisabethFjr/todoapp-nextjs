@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { RefObject, useState } from "react";
 import { nanoid } from "nanoid";
 import styles from "./PaletteColor.module.scss";
 import { CheckCircleFill } from "react-bootstrap-icons";
@@ -17,9 +17,14 @@ const colors = [
 interface PaletteColorProps {
   onSelectColor: (color: string) => void;
   selectedColor: string;
+  paletteColorRef: RefObject<HTMLFormElement>;
 }
 
-function PaletteColor({ onSelectColor, selectedColor }: PaletteColorProps) {
+function PaletteColor({
+  onSelectColor,
+  selectedColor,
+  paletteColorRef,
+}: PaletteColorProps) {
   const [selected, setSelected] = useState<string>(selectedColor);
 
   const handleColorChange = (color: string) => {
@@ -32,7 +37,7 @@ function PaletteColor({ onSelectColor, selectedColor }: PaletteColorProps) {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit} ref={paletteColorRef}>
       <ul className={styles.colors}>
         {colors.map((color) => (
           <li className={styles.color} key={nanoid()}>

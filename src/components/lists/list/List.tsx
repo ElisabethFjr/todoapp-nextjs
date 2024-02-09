@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { List, Task } from "@/@types";
 import TaskInProgress from "./taskInProgress/TaskInProgress";
 import TaskDone from "./taskDone/TaskDone";
@@ -35,6 +35,35 @@ function List({ list, setListData }: ListProps) {
   const handleSelectColor = (color: string) => {
     setSelectedColor(color);
   };
+
+  // Handle Click outside to close modals
+  const paletteColorRef = useRef<HTMLFormElement>(null);
+  const editListFormRef = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        (isOpenPaletteColor &&
+          paletteColorRef.current &&
+          !paletteColorRef.current.contains(event.target as Node)) ||
+        (isOpenEditListModal &&
+          editListFormRef.current &&
+          !editListFormRef.current.contains(event.target as Node))
+      ) {
+        setIsOpenPaletteColor(false);
+        setIsOpenEditListModal(false);
+      }
+    }
+
+    if (isOpenEditListModal || isOpenPaletteColor) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpenEditListModal, isOpenPaletteColor]);
 
   // Handle Task checkbox change
   const handleToggleTask = (taskId: string) => {
@@ -120,6 +149,7 @@ function List({ list, setListData }: ListProps) {
         <PaletteColor
           onSelectColor={handleSelectColor}
           selectedColor={selectedColor}
+          paletteColorRef={paletteColorRef}
         />
       )}
       {isOpenEditListModal && (
@@ -127,6 +157,7 @@ function List({ list, setListData }: ListProps) {
           list={list}
           updateListData={setListData}
           closeModal={() => setIsOpenEditListModal(false)}
+          editListFormRef={editListFormRef}
         />
       )}
     </article>

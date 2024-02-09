@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import ModalContainer from "../modalContainer/ModalContainer";
 import { GripVertical, Plus, XLg } from "react-bootstrap-icons";
@@ -9,9 +9,15 @@ interface EditListFormProps {
   list: List;
   updateListData: Dispatch<SetStateAction<List[]>>;
   closeModal: (value: React.SetStateAction<boolean>) => void;
+  editListFormRef: RefObject<HTMLFormElement>;
 }
 
-function EditListForm({ list, updateListData, closeModal }: EditListFormProps) {
+function EditListForm({
+  list,
+  updateListData,
+  closeModal,
+  editListFormRef,
+}: EditListFormProps) {
   //---VARIABLES----
   // Declaration states
   const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -109,6 +115,7 @@ function EditListForm({ list, updateListData, closeModal }: EditListFormProps) {
         className={styles.form}
         onSubmit={handleSubmit}
         onKeyDown={handleFormKeyPress}
+        ref={editListFormRef}
       >
         {/* Edit Title Section */}
         <div className={styles.title}>
