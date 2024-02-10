@@ -11,10 +11,9 @@ import styles from "./List.module.scss";
 
 interface ListProps {
   list: List;
-  setListData: Dispatch<SetStateAction<List[]>>;
 }
 
-function List({ list, setListData }: ListProps) {
+function List({ list }: ListProps) {
   const [tasks, setTasks] = useState<Task[]>(list.tasks);
   const [isOpenEditListModal, setIsOpenEditListModal] =
     useState<boolean>(false);
@@ -157,7 +156,6 @@ function List({ list, setListData }: ListProps) {
       {isOpenEditListModal && (
         <EditListForm
           list={list}
-          updateListData={setListData}
           closeModal={() => setIsOpenEditListModal(false)}
           editListFormRef={editListFormRef}
         />

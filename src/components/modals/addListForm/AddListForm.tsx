@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import DOMPurify from "dompurify";
 import ModalContainer from "../modalContainer/ModalContainer";
@@ -8,11 +9,10 @@ import { GripVertical, Plus, XLg } from "react-bootstrap-icons";
 import { Task } from "@/@types";
 import styles from "./AddListForm.module.scss";
 
-interface AddListFormProps {
-  closeModal: (value: React.SetStateAction<boolean>) => void;
-}
+function AddListForm() {
+  // --- HOOKS ---
+  const router = useRouter();
 
-function AddListForm({ closeModal }: AddListFormProps) {
   //---VARIABLES----
   // Declaration states
   const [isOpen, setIsOpen] = useState<boolean>(true);
@@ -95,30 +95,34 @@ function AddListForm({ closeModal }: AddListFormProps) {
   };
 
   // Handle form submission
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const title = formData.get("title") as string;
-    let tasksArray: string[] = [];
-    if (tasks && tasks.length > 0) {
-      tasksArray = tasks.map((task) => task.text);
-    }
 
     const formDataJSON = JSON.stringify({
       title: title,
-      tasks: tasksArray.length > 0 ? tasksArray : null,
+      tasks: tasks && tasks.length > 0 ? tasks : null,
     });
-    console.log(formDataJSON);
+
+    await fetch("/api/list", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: formDataJSON,
+    });
+
     // Reset the form
     setTitle("");
     setTasks([]);
-    closeModal(true);
+    handleClose();
+    router.refresh();
   };
 
   // Handle closing modal
   const handleClose = () => {
-    setIsOpen(!isOpen);
-    closeModal(true);
+    router.back();
   };
 
   return (

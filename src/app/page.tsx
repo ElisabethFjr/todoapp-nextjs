@@ -1,31 +1,35 @@
-"use client";
-
-import { useState } from "react";
+import Link from "next/link";
 import Lists from "@/components/lists/Lists";
 import AddListForm from "@/components/modals/addListForm/AddListForm";
 import { PlusCircle } from "react-bootstrap-icons";
 import styles from "./page.module.scss";
 
-export default function Home() {
-  const [isOpenAddListModal, setIsOpenAddListModal] = useState<boolean>(false);
+interface HomeProps {
+  searchParams: Record<string, string> | null | undefined;
+}
 
-  // hHndle Click to open the Add Form Modal
-  const handleOpenAddForm = () => {
-    setIsOpenAddListModal(!isOpenAddListModal);
-  };
+async function Home({ searchParams }: HomeProps) {
+  const showAddListForm = searchParams?.addlist;
+  const response = await fetch("http://localhost:3000/api/list", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const lists = await response.json();
 
   return (
     <>
       <div className={styles.container}>
-        <button className={styles.button} onClick={handleOpenAddForm}>
+        <Link className={styles.button} href={"/?addlist=true"}>
           <PlusCircle />
           Créer une liste
-        </button>
+        </Link>
       </div>
-      <Lists />
-      {isOpenAddListModal && (
-        <AddListForm closeModal={() => setIsOpenAddListModal(false)} />
-      )}
+      <Lists lists={lists} />
+      {showAddListForm && <AddListForm />}
     </>
   );
 }
+
+export default Home;

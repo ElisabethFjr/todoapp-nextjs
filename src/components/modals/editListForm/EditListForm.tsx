@@ -13,14 +13,12 @@ import styles from "./EditListForm.module.scss";
 
 interface EditListFormProps {
   list: List;
-  updateListData: Dispatch<SetStateAction<List[]>>;
   closeModal: (value: React.SetStateAction<boolean>) => void;
   editListFormRef: RefObject<HTMLFormElement>;
 }
 
 function EditListForm({
   list,
-  updateListData,
   closeModal,
   editListFormRef,
 }: EditListFormProps) {
