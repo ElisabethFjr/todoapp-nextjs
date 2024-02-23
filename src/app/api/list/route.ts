@@ -11,6 +11,8 @@ export async function GET() {
         tasks: true, // Include tasks associated with the list
       },
     });
+    // console.log("Lists", lists);
+
     return NextResponse.json(lists);
   } catch (error) {
     console.error(error);
@@ -78,6 +80,8 @@ export async function POST(req: NextRequest) {
     });
 
     // Return the JSON new List
+    // console.log("Liste créée", newList);
+
     return NextResponse.json(newList);
   } catch (error) {
     console.error(error);

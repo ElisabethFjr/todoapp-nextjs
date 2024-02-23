@@ -15,7 +15,6 @@ function AddListForm() {
 
   //---VARIABLES----
   // Declaration states
-  const [isOpen, setIsOpen] = useState<boolean>(true);
   const [title, setTitle] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskValue, setTaskValue] = useState<string>("");
@@ -113,7 +112,7 @@ function AddListForm() {
       body: formDataJSON,
     });
 
-    // Reset the form
+    // Reset the form and refresh page
     setTitle("");
     setTasks([]);
     handleClose();

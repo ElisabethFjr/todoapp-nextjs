@@ -10,6 +10,7 @@ interface HomeProps {
 
 async function Home({ searchParams }: HomeProps) {
   const showAddListForm = searchParams?.addlist;
+
   const response = await fetch("http://localhost:3000/api/list", {
     method: "GET",
     headers: {
@@ -17,6 +18,7 @@ async function Home({ searchParams }: HomeProps) {
     },
   });
   const lists = await response.json();
+  console.log(lists);
 
   return (
     <>
