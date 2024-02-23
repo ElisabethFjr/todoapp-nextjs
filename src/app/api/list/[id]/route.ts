@@ -7,7 +7,6 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   const listId = params.id;
-  console.log(listId);
 
   try {
     // Check the id on the URL
