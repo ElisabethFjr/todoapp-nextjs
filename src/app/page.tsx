@@ -18,6 +18,7 @@ async function Home({ searchParams }: HomeProps) {
     },
   });
   const lists = await response.json();
+  console.log(lists);
 
   return (
     <>
