@@ -109,9 +109,6 @@ function AddListForm() {
     // Close modal and remove search param
     await handleClose();
     router.refresh();
-    // // Reset the form
-    // setTitle("");
-    // setTasks([]);
   };
 
   const handleClose = () => {

@@ -80,8 +80,6 @@ export async function POST(req: NextRequest) {
     });
 
     // Return the JSON new List
-    // console.log("Liste créée", newList);
-
     return NextResponse.json(newList);
   } catch (error) {
     console.error(error);
