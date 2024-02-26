@@ -105,19 +105,22 @@ function AddListForm() {
       tasks: tasks && tasks.length > 0 ? tasks : null,
     });
 
-    // Fetch Api
-    await addList(formDataJSON);
-
-    // Reset the form and refresh page
-    setTitle("");
-    setTasks([]);
-    handleClose();
-    router.refresh();
+    try {
+      // Fetch Api
+      await addList(formDataJSON);
+      // Close modal and remove search param
+      handleClose();
+      router.refresh();
+      // Reset the form
+      setTitle("");
+      setTasks([]);
+    } catch (error) {
+      console.error("Failed to add list:", error);
+    }
   };
 
-  // Handle closing modal
   const handleClose = () => {
-    router.back();
+    router.back(); // Close the modal
   };
 
   return (

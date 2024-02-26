@@ -8,6 +8,7 @@ export async function getAllLists() {
     headers: {
       "Content-Type": "application/json",
     },
+    cache: "no-store", // Désactiver la mise en cache
   });
   if (!response.ok) {
     throw new Error("Failed to fetch lists");
