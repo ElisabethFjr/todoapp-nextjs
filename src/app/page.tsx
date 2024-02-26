@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getAllLists } from "@/lib/api";
 import Lists from "@/components/lists/Lists";
 import AddListForm from "@/components/modals/addListForm/AddListForm";
 import { PlusCircle } from "react-bootstrap-icons";
@@ -11,14 +12,8 @@ interface HomeProps {
 async function Home({ searchParams }: HomeProps) {
   const showAddListForm = searchParams?.addlist;
 
-  const response = await fetch("http://localhost:3000/api/list", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const lists = await response.json();
-  console.log(lists);
+  // Fetch all Lists
+  const lists = await getAllLists();
 
   return (
     <>

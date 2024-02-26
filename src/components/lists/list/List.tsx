@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { deleteList } from "@/lib/api";
 import { List, Task } from "@/@types";
 import TaskInProgress from "./taskInProgress/TaskInProgress";
 import TaskCompleted from "./taskCompleted/TaskCompleted";
@@ -88,12 +89,7 @@ function List({ list }: ListProps) {
 
   // Handle Delete a List
   const handleDeleteList = async () => {
-    await fetch(`http://localhost:3000/api/list/${list.id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await deleteList(list.id);
     router.refresh();
   };
 

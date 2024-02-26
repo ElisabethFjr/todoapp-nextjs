@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import DOMPurify from "dompurify";
+import { addList } from "@/lib/api";
 import ModalContainer from "../modalContainer/ModalContainer";
 import { GripVertical, Plus, XLg } from "react-bootstrap-icons";
 import { Task } from "@/@types";
@@ -104,13 +105,8 @@ function AddListForm() {
       tasks: tasks && tasks.length > 0 ? tasks : null,
     });
 
-    await fetch("/api/list", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: formDataJSON,
-    });
+    // Fetch Api
+    await addList(formDataJSON);
 
     // Reset the form and refresh page
     setTitle("");
