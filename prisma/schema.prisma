@@ -24,6 +24,7 @@ model Task {
   id           String     @id @default(uuid())
   text         String
   is_completed Boolean    @default(false)
+  is_deleted   Boolean?   @default(false)
   createdAt    DateTime   @default(now()) @map(name: "created_at")
   updatedAt    DateTime   @updatedAt @map(name: "updated_at")
   list         List       @relation(fields: [listId], references: [id])

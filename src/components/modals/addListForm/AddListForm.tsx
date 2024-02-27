@@ -104,6 +104,7 @@ function AddListForm() {
       title: title,
       tasks: tasks && tasks.length > 0 ? tasks : null,
     });
+
     // Fetch Api
     await addList(formDataJSON);
     // Close modal and remove search param

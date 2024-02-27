@@ -1,5 +1,9 @@
-import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react";
+"use client";
+
+import { RefObject, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
+import { deleteTask, updateList } from "@/lib/api";
 import ModalContainer from "../modalContainer/ModalContainer";
 import {
   Check,
@@ -23,6 +27,9 @@ function EditListForm({
   editListFormRef,
 }: EditListFormProps) {
   //---VARIABLES----
+  // --- HOOKS ---
+  const router = useRouter();
+
   // Declaration states
   const [isOpen, setIsOpen] = useState<boolean>(true);
   const [title, setTitle] = useState<string>(list.title);
@@ -53,9 +60,11 @@ function EditListForm({
   };
 
   // Handle Delete a task from the list
-  const handleDeleteTask = (id: string) => {
+  const handleDeleteTask = async (id: string) => {
     const updatedTasks = tasks.filter((task) => task.id !== id);
+    await deleteTask(list.id, id);
     setTasks(updatedTasks);
+    router.refresh();
   };
 
   // Handle Add a new task in the list
@@ -109,10 +118,47 @@ function EditListForm({
   };
 
   // Handle form submission
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setTitle("");
-    closeModal(true);
+    // Get updated title
+    const updatedTitle = title;
+    // Process each task update, deletion, or addition
+    const updatedTasks = tasks.map((task: Task) => {
+      if (task.id) {
+        // Update existing task
+        return {
+          id: task.id,
+          text: task.text,
+          is_completed: task.is_completed,
+        };
+      } else {
+        if (task.is_deleted) {
+          // Delete task if marked for deletion
+          return {
+            id: task.id,
+            delete: true,
+          };
+        } else {
+          // Create new task if no id
+          return {
+            text: task.text,
+            is_completed: task.is_completed,
+          };
+        }
+      }
+    });
+
+    const formDataJSON = JSON.stringify({
+      title: updatedTitle,
+      tasks: updatedTasks && updatedTasks.length > 0 ? tasks : null,
+    });
+
+    // Call api PATCH
+    await updateList(list.id, formDataJSON);
+
+    // Close modal and refresh page
+    await handleClose();
+    router.refresh();
   };
 
   // Handle closing modal

@@ -11,13 +11,15 @@ export async function GET() {
         tasks: true, // Include tasks associated with the list
       },
     });
-    // console.log("Lists", lists);
 
     return NextResponse.json(lists);
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Oops, an error occurs, please try again later." },
+      {
+        message:
+          "Oops, une erreur s'est produite. Veuillez réessayer plus tard.",
+      },
       { status: 500 }
     );
   }
@@ -47,7 +49,7 @@ export async function POST(req: NextRequest) {
     if (!validationResult.success) {
       return NextResponse.json(
         {
-          message: "User didn't respect the expected format.",
+          message: "Le format de données n'est pas respecté.",
         },
         { status: 400 }
       );
@@ -80,11 +82,14 @@ export async function POST(req: NextRequest) {
     });
 
     // Return the JSON new List
-    return NextResponse.json(newList);
+    return NextResponse.json(newList, { status: 201 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Oops, an error occurs, please try again later." },
+      {
+        message:
+          "Oops, une erreur s'est produite. Veuillez réessayer plus tard.",
+      },
       { status: 500 }
     );
   }

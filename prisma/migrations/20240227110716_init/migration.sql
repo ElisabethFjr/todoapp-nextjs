@@ -13,7 +13,8 @@ CREATE TABLE "List" (
 CREATE TABLE "Task" (
     "id" TEXT NOT NULL,
     "text" TEXT NOT NULL,
-    "is_completed" BOOLEAN NOT NULL DEFAULT false,
+    "is_completed" BOOLEAN DEFAULT false,
+    "is_deleted" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "listId" TEXT NOT NULL,

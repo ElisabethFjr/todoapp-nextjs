@@ -1,8 +1,9 @@
+import { Task } from "@/@types";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
-// PATCH "/api/list/[listId]" Update List
+// PATCH "/api/list/[listId]" Update List with Tasks
 export async function PATCH(
   req: NextRequest,
   { params }: { params: { listId: string } }
@@ -39,32 +40,37 @@ export async function PATCH(
     if (!validationResult.success) {
       return NextResponse.json(
         {
-          message: "User didn't respect the expected format.",
+          message: "Le format de données n'est pas respecté.",
         },
         { status: 400 }
       );
     }
 
-    // Update the list with Prisma
-    // Update List title
-    await prisma.list.update({
+    // Update list
+    const updatedList = await prisma.list.update({
       where: {
         id: listId,
       },
       data: {
         title,
+        tasks: {
+          upsert: tasks.map((task: Task) => ({
+            where: { id: task.id },
+            create: {
+              id: task.id,
+              text: task.text,
+              is_completed: task.is_completed,
+            },
+            update: {
+              text: task.text,
+              is_completed: task.is_completed,
+            },
+          })),
+        },
       },
-    });
-    // Update Tasks : checked, update text, delete task, add task
-    const updatedList = await prisma.list.findUnique({
-      where: {
-        id: listId,
-      },
-      include: { tasks: true },
     });
 
-    // Return the JSON updated List
-    return NextResponse.json(updatedList);
+    return NextResponse.json(updatedList, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -77,7 +83,7 @@ export async function PATCH(
   }
 }
 
-// DELETE "/api/list/[listId]" Delete a list
+// DELETE "/api/list/[listId]" Delete a list with its tasks
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { listId: string } }

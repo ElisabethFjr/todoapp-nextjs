@@ -32,10 +32,11 @@ export async function addList(formDataJSON: string) {
 }
 
 // UPDATE List
-export async function editList(listId: string) {
+export async function updateList(listId: string, formDataJSON: string) {
   const response = await fetch(`${baseURL}/api/list/${listId}`, {
     method: "PATCH",
     headers: headers,
+    body: formDataJSON,
   });
   if (!response.ok) {
     throw new Error(
@@ -45,7 +46,7 @@ export async function editList(listId: string) {
 }
 
 // UPDATE Color List
-export async function editColorList(listId: string) {
+export async function updateColorList(listId: string) {
   const response = await fetch(`${baseURL}/api/list/color/${listId}`, {
     method: "PATCH",
     headers: headers,
@@ -70,9 +71,41 @@ export async function deleteList(listId: string) {
   }
 }
 
+// ADD Task
+export async function addTask(listId: string, formDataJSON: string) {
+  const response = await fetch(`${baseURL}/api/list/${listId}/task`, {
+    method: "POST",
+    headers: headers,
+    body: formDataJSON,
+  });
+  if (!response.ok) {
+    throw new Error(
+      "Une erreur est survenue, la tâche n'a pas pu être ajoutée."
+    );
+  }
+}
+
 // UPDATE Task
-export async function editTask(taskId: string) {
-  const response = await fetch(`${baseURL}/api/task/${taskId}`, {
+export async function updateTask(
+  listId: string,
+  taskId: string,
+  formDataJSON: string
+) {
+  const response = await fetch(`${baseURL}/api/list/${listId}/task/${taskId}`, {
+    method: "PATCH",
+    headers: headers,
+    body: formDataJSON,
+  });
+  if (!response.ok) {
+    throw new Error(
+      "Une erreur est survenue, la tâche n'a pas pu être modifiée."
+    );
+  }
+}
+
+// UPDATE status Task
+export async function updateStatusTask(listId: string, taskId: string) {
+  const response = await fetch(`${baseURL}/api/list/${listId}/task/${taskId}`, {
     method: "PATCH",
     headers: headers,
   });
@@ -84,8 +117,8 @@ export async function editTask(taskId: string) {
 }
 
 // DELETE Task
-export async function deleteTask(taskId: string) {
-  const response = await fetch(`${baseURL}/api/task/${taskId}`, {
+export async function deleteTask(listId: string, taskId: string) {
+  const response = await fetch(`${baseURL}/api/list/${listId}/task/${taskId}`, {
     method: "DELETE",
     headers: headers,
   });
