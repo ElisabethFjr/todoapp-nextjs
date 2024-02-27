@@ -3,6 +3,40 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 
+// GET "/api/list/[listId]" Get a list by id with tasks
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { listId: string } }
+) {
+  const listId = params.listId;
+  try {
+    // Check the id on the URL
+    if (!listId) {
+      return NextResponse.json(
+        { message: "ID non présent dans l'URL." },
+        { status: 400 }
+      );
+    }
+    // Find the list
+    const list = await prisma.list.findUnique({
+      where: { id: listId },
+      include: {
+        tasks: true,
+      },
+    });
+    return NextResponse.json(list);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      {
+        message:
+          "Oops, une erreur s'est produite. Veuillez réessayer plus tard.",
+      },
+      { status: 500 }
+    );
+  }
+}
+
 // PATCH "/api/list/[listId]" Update List with Tasks
 export async function PATCH(
   req: NextRequest,

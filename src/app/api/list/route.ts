@@ -4,7 +4,7 @@ import z from "zod";
 import { Task } from "@/@types";
 
 // GET "/api/list" All Lists with Tasks
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const lists = await prisma.list.findMany({
       include: {

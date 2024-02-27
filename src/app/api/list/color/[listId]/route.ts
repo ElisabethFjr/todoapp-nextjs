@@ -10,7 +10,6 @@ export async function PATCH(
   try {
     const body = await req.json();
     const { color } = body;
-    console.log(color);
 
     // Check if the list ID is present in the URL
     if (!listId) {

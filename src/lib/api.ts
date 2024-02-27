@@ -12,7 +12,24 @@ export async function getAllLists() {
     cache: "no-store",
   });
   if (!response.ok) {
-    throw new Error("Impossible de recupérer les listes.");
+    throw new Error(
+      "Une erreur est survenue, les listes n'ont pas pu être recupérées."
+    );
+  }
+  return response.json();
+}
+
+// GET A list
+export async function getListById(listId: string) {
+  const response = await fetch(`${baseURL}/api/list/${listId}`, {
+    method: "GET",
+    headers: headers,
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    throw new Error(
+      "Une erreur est survenue, la liste n'a pas pu être récupérée."
+    );
   }
   return response.json();
 }
@@ -70,6 +87,20 @@ export async function deleteList(listId: string) {
       "Une erreur est survenue, la liste n'a pas pu être supprimée."
     );
   }
+}
+
+// GET All tasks
+export async function getAllTasks(listId: string) {
+  const response = await fetch(`${baseURL}/api/list/${listId}/task`, {
+    method: "GET",
+    headers: headers,
+  });
+  if (!response.ok) {
+    throw new Error(
+      "Une erreur est survenue, les tâches n'ont pas pu être recupérées."
+    );
+  }
+  return response.json();
 }
 
 // ADD Task

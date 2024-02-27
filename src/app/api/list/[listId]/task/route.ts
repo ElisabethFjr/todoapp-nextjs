@@ -9,6 +9,14 @@ export async function GET(
   const listId = params.listId;
 
   try {
+    // Check the id on the URL
+    if (!listId) {
+      return NextResponse.json(
+        { message: "ID non présent dans l'URL." },
+        { status: 400 }
+      );
+    }
+    // Find all tasks
     const tasks = await prisma.task.findMany({
       where: {
         listId: listId,
@@ -36,6 +44,13 @@ export async function POST(
   try {
     const body = await req.json();
     const { text, is_completed } = body;
+    // Check if the list ID is present in the URL
+    if (!listId) {
+      return NextResponse.json(
+        { message: "ID non présent dans l'URL." },
+        { status: 400 }
+      );
+    }
 
     // Create the new Task in the List with Prisma
     const newTask = await prisma.task.create({

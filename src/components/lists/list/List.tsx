@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { deleteList } from "@/lib/api";
+import { deleteList, getAllTasks, getListById } from "@/lib/api";
 import { List, Task } from "@/@types";
 import TaskInProgress from "./taskInProgress/TaskInProgress";
 import TaskCompleted from "./taskCompleted/TaskCompleted";
@@ -174,7 +174,9 @@ function List({ list }: ListProps) {
       {isOpenEditListModal && (
         <EditListForm
           list={list}
-          closeModal={() => setIsOpenEditListModal(false)}
+          closeModal={() => {
+            setIsOpenEditListModal(false);
+          }}
           editListFormRef={editListFormRef}
         />
       )}
