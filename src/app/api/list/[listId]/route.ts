@@ -56,11 +56,13 @@ export async function PATCH(
         tasks: {
           upsert: tasks.map((task: Task) => ({
             where: { id: task.id },
+            // Create the task if doesn't exist
             create: {
               id: task.id,
               text: task.text,
               is_completed: task.is_completed,
             },
+            // Or update the task if exists
             update: {
               text: task.text,
               is_completed: task.is_completed,

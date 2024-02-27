@@ -62,9 +62,9 @@ function EditListForm({
   // Handle Delete a task from the list
   const handleDeleteTask = async (id: string) => {
     const updatedTasks = tasks.filter((task) => task.id !== id);
+    // Fetch api to delete the task
     await deleteTask(list.id, id);
     setTasks(updatedTasks);
-    router.refresh();
   };
 
   // Handle Add a new task in the list
@@ -122,41 +122,20 @@ function EditListForm({
     event.preventDefault();
     // Get updated title
     const updatedTitle = title;
-    // Process each task update, deletion, or addition
-    const updatedTasks = tasks.map((task: Task) => {
-      if (task.id) {
-        // Update existing task
-        return {
-          id: task.id,
-          text: task.text,
-          is_completed: task.is_completed,
-        };
-      } else {
-        if (task.is_deleted) {
-          // Delete task if marked for deletion
-          return {
-            id: task.id,
-            delete: true,
-          };
-        } else {
-          // Create new task if no id
-          return {
-            text: task.text,
-            is_completed: task.is_completed,
-          };
-        }
-      }
-    });
-
+    // Get all updated tasks
+    const updatedTasks = tasks.map((task: Task) => ({
+      id: task.id,
+      text: task.text,
+      is_completed: task.is_completed,
+    }));
+    // Convert form data to JSON
     const formDataJSON = JSON.stringify({
       title: updatedTitle,
       tasks: updatedTasks && updatedTasks.length > 0 ? tasks : null,
     });
-
-    // Call api PATCH
+    // Fetch api PATCH to update the list data
     await updateList(list.id, formDataJSON);
-
-    // Close modal and refresh page
+    // Close the modal and then refresh the page
     await handleClose();
     router.refresh();
   };
