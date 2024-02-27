@@ -46,10 +46,11 @@ export async function updateList(listId: string, formDataJSON: string) {
 }
 
 // UPDATE Color List
-export async function updateColorList(listId: string) {
+export async function updateColorList(listId: string, colorJSON: string) {
   const response = await fetch(`${baseURL}/api/list/color/${listId}`, {
     method: "PATCH",
     headers: headers,
+    body: colorJSON,
   });
   if (!response.ok) {
     throw new Error(

@@ -168,6 +168,7 @@ function List({ list }: ListProps) {
           onSelectColor={handleSelectColor}
           selectedColor={selectedColor}
           paletteColorRef={paletteColorRef}
+          listId={list.id}
         />
       )}
       {isOpenEditListModal && (

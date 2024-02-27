@@ -2,6 +2,7 @@
 
 import { RefObject, useState } from "react";
 import { nanoid } from "nanoid";
+import { updateColorList } from "@/lib/api";
 import styles from "./PaletteColor.module.scss";
 import { CheckCircleFill } from "react-bootstrap-icons";
 
@@ -18,26 +19,26 @@ interface PaletteColorProps {
   onSelectColor: (color: string) => void;
   selectedColor: string;
   paletteColorRef: RefObject<HTMLFormElement>;
+  listId: string;
 }
 
 function PaletteColor({
   onSelectColor,
   selectedColor,
   paletteColorRef,
+  listId,
 }: PaletteColorProps) {
   const [selected, setSelected] = useState<string>(selectedColor);
 
-  const handleColorChange = (color: string) => {
+  const handleColorChange = async (color: string) => {
     setSelected(color);
     onSelectColor(color);
-  };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSelectColor(selectedColor);
+    const colorJSON = JSON.stringify({ color });
+    await updateColorList(listId, colorJSON);
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit} ref={paletteColorRef}>
+    <form className={styles.form} ref={paletteColorRef}>
       <ul className={styles.colors}>
         {colors.map((color) => (
           <li className={styles.color} key={nanoid()}>
