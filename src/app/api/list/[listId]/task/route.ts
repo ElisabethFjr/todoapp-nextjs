@@ -51,7 +51,6 @@ export async function POST(
         { status: 400 }
       );
     }
-
     // Create the new Task in the List with Prisma
     const newTask = await prisma.task.create({
       data: {

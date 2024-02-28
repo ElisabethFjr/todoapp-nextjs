@@ -1,6 +1,6 @@
 "use client";
 
-import { RefObject, useRef, useState } from "react";
+import { Dispatch, RefObject, SetStateAction, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import { deleteTask, updateList } from "@/lib/api";
@@ -19,12 +19,16 @@ interface EditListFormProps {
   list: List;
   closeModal: (value: React.SetStateAction<boolean>) => void;
   editListFormRef: RefObject<HTMLFormElement>;
+  setTasks: Dispatch<SetStateAction<Task[]>>;
+  setTitle: Dispatch<SetStateAction<string>>;
 }
 
 function EditListForm({
   list,
   closeModal,
   editListFormRef,
+  setTasks,
+  setTitle,
 }: EditListFormProps) {
   //---VARIABLES----
   // --- HOOKS ---
@@ -32,9 +36,9 @@ function EditListForm({
 
   // Declaration states
   const [isOpen, setIsOpen] = useState<boolean>(true);
-  const [title, setTitle] = useState<string>(list.title);
+  const [formTitle, setFormTitle] = useState<string>(list.title);
   const [taskValue, setTaskValue] = useState<string>("");
-  const [tasks, setTasks] = useState<Task[]>(list.tasks);
+  const [formTasks, setFormTasks] = useState<Task[]>(list.tasks);
 
   // Declaration task input ref
   const taskInputRef = useRef<HTMLInputElement>(null); // Ref for task input
@@ -42,7 +46,7 @@ function EditListForm({
   //---HANDLING FUNCTIONS----
   // Handle Change title input value
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.target.value);
+    setFormTitle(event.target.value);
   };
 
   // Handle Change task input value
@@ -52,7 +56,7 @@ function EditListForm({
 
   // Handle Edit text of a created task
   const handleTaskTextChange = (id: string, newText: string) => {
-    setTasks((prevTasks) =>
+    setFormTasks((prevTasks) =>
       prevTasks.map((task) =>
         task.id === id ? { ...task, text: newText } : task
       )
@@ -61,10 +65,10 @@ function EditListForm({
 
   // Handle Delete a task from the list
   const handleDeleteTask = async (id: string) => {
-    const updatedTasks = tasks.filter((task) => task.id !== id);
+    const updatedTasks = formTasks.filter((task) => task.id !== id);
     // Fetch api to delete the task
     await deleteTask(list.id, id);
-    setTasks(updatedTasks);
+    setFormTasks(updatedTasks);
   };
 
   // Handle Add a new task in the list
@@ -75,17 +79,17 @@ function EditListForm({
       text: taskValue,
       is_completed: false,
     };
-    const updatedTasks = [...tasks, newTask];
-    setTasks(updatedTasks);
+    const updatedTasks = [...formTasks, newTask];
+    setFormTasks(updatedTasks);
     setTaskValue("");
   };
 
   // Handle Task checkbox change
   const handleToggleTask = (taskId: string) => {
-    const updatedTasks = tasks.map((task) =>
+    const updatedTasks = formTasks.map((task) =>
       task.id === taskId ? { ...task, is_completed: !task.is_completed } : task
     );
-    setTasks(updatedTasks);
+    setFormTasks(updatedTasks);
   };
 
   // Focus task input when Enter key pressed
@@ -121,9 +125,9 @@ function EditListForm({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     // Get updated title
-    const updatedTitle = title;
+    const updatedTitle = formTitle;
     // Get all updated tasks
-    const updatedTasks = tasks.map((task: Task) => ({
+    const updatedTasks = formTasks.map((task: Task) => ({
       id: task.id,
       text: task.text,
       is_completed: task.is_completed,
@@ -131,10 +135,13 @@ function EditListForm({
     // Convert form data to JSON
     const formDataJSON = JSON.stringify({
       title: updatedTitle,
-      tasks: updatedTasks && updatedTasks.length > 0 ? tasks : null,
+      tasks: updatedTasks && updatedTasks.length > 0 ? formTasks : null,
     });
     // Fetch api PATCH to update the list data
     await updateList(list.id, formDataJSON);
+    // Update tasks state on List Component
+    setTitle(updatedTitle);
+    setTasks(updatedTasks);
     // Close the modal and then refresh the page
     await handleClose();
     router.refresh();
@@ -147,9 +154,9 @@ function EditListForm({
   };
 
   // Filter In Progress Tasks
-  const inProgressTasks = tasks.filter((task) => !task.is_completed);
+  const inProgressTasks = formTasks.filter((task) => !task.is_completed);
   // Filter Completed Tasks
-  const completedTasks = tasks.filter((task) => task.is_completed);
+  const completedTasks = formTasks.filter((task) => task.is_completed);
   const completedTasksCount = completedTasks.length; // Get the number of completed tasks
   const completedTasksText =
     completedTasksCount === 1 ? "tâche terminée" : "tâches terminées"; // Determine the appropriate text based on the number of completed tasks
@@ -171,7 +178,7 @@ function EditListForm({
             name="title"
             type="text"
             placeholder="Titre"
-            value={title}
+            value={formTitle}
             onChange={handleTitleChange}
             onKeyDown={handleEnterPressFocusTask} // Handle Enter key press to move focus to task input
             required
@@ -240,7 +247,7 @@ function EditListForm({
         {completedTasks.length > 0 && (
           <div
             className={`${
-              completedTasksCount === tasks.length
+              completedTasksCount === formTasks.length
                 ? `${styles.completed} ${styles.reset}`
                 : styles.completed
             }`}

@@ -20,11 +20,15 @@ function List({ list }: ListProps) {
 
   //---VARIABLES----
   // Declaration states
+  const [title, setTitle] = useState<string>(list.title);
   const [tasks, setTasks] = useState<Task[]>(list.tasks);
   const [isOpenEditListModal, setIsOpenEditListModal] =
     useState<boolean>(false);
   const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>("");
+
+  console.log("List.tsx: La Liste", list);
+  console.log("List.tsx: useState tasks", tasks);
 
   //---HANDLING FUNCTIONS----
   // Handle Click to toggle the EditListForm modal
@@ -99,7 +103,7 @@ function List({ list }: ListProps) {
       style={{ backgroundColor: selectedColor ? selectedColor : list.color }}
     >
       {/* Title Section */}
-      <h2 className={styles.title}>{list.title}</h2>
+      <h2 className={styles.title}>{title}</h2>
       {/* In Progress Task Section */}
       {inProgressTasks.length > 0 && (
         <ul className={styles.inprogress}>
@@ -178,6 +182,8 @@ function List({ list }: ListProps) {
             setIsOpenEditListModal(false);
           }}
           editListFormRef={editListFormRef}
+          setTasks={setTasks}
+          setTitle={setTitle}
         />
       )}
     </article>
