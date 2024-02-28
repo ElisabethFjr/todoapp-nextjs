@@ -107,13 +107,9 @@ function AddListForm() {
 
     // Fetch Api
     await addList(formDataJSON);
-    console.log("form envoyé");
-
     // Close modal and remove search param
     await handleClose();
-    console.log("modal fermée");
     router.refresh();
-    console.log("page refresh");
   };
 
   const handleClose = () => {

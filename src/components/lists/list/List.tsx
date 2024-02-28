@@ -2,7 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { deleteList, getAllTasks, getListById } from "@/lib/api";
+import {
+  deleteList,
+  getAllTasks,
+  getListById,
+  updateStatusTask,
+} from "@/lib/api";
 import { List, Task } from "@/@types";
 import TaskInProgress from "./taskInProgress/TaskInProgress";
 import TaskCompleted from "./taskCompleted/TaskCompleted";
@@ -73,11 +78,20 @@ function List({ list }: ListProps) {
   }, [isOpenEditListModal, isOpenPaletteColor]);
 
   // Handle Task checkbox change
-  const handleToggleTask = (taskId: string) => {
+  const handleToggleTask = async (taskId: string) => {
+    // Client : Update tasks by toggle is_completed status if task checkbox is clicked
     const updatedTasks = tasks.map((task) =>
       task.id === taskId ? { ...task, is_completed: !task.is_completed } : task
     );
     setTasks(updatedTasks);
+    // Server : Find the task by taskId & Update the is_completed status of the task
+    const taskToUpdate = tasks.find((task) => task.id === taskId);
+    const updatedTask = {
+      ...taskToUpdate,
+      is_completed: !taskToUpdate?.is_completed,
+    };
+    // Call API to update the task's is_completed status
+    await updateStatusTask(list.id, taskId, updatedTask.is_completed);
   };
 
   // Filter In Progress Tasks

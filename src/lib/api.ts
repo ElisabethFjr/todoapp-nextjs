@@ -135,12 +135,20 @@ export async function updateTask(
   }
 }
 
-// UPDATE status Task
-export async function updateStatusTask(listId: string, taskId: string) {
-  const response = await fetch(`${baseURL}/api/list/${listId}/task/${taskId}`, {
-    method: "PATCH",
-    headers: headers,
-  });
+// UPDATE checked status Task
+export async function updateStatusTask(
+  listId: string,
+  taskId: string,
+  isCompleted: boolean
+) {
+  const response = await fetch(
+    `${baseURL}/api/list/${listId}/task/checked/${taskId}`,
+    {
+      method: "PATCH",
+      headers: headers,
+      body: JSON.stringify({ is_completed: isCompleted }),
+    }
+  );
   if (!response.ok) {
     throw new Error(
       "Une erreur est survenue, la tâche n'a pas pu être modifiée."
