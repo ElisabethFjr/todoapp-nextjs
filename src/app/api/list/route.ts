@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
       include: {
         tasks: true, // Include tasks associated with the list
       },
+      orderBy: { createdAt: "asc" },
     });
 
     return NextResponse.json(lists);
