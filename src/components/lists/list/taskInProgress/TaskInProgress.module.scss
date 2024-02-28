@@ -2,11 +2,19 @@
 
 .task {
   display: flex;
-  align-items: center;
   gap: 0.5rem;
   .checkbox {
+    width: 13px;
+    height: 13px;
+    margin-top: 5px;
     &:hover {
       border: 2px solid $black;
     }
+  }
+  .label {
+    flex-grow: 1;
+    max-width: calc(100% - (13px + 0.5rem));
+    overflow: hidden;
+    white-space: wrap;
   }
 }

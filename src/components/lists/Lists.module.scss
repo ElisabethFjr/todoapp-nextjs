@@ -6,10 +6,12 @@
   margin-bottom: 5rem;
 
   .lists {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     justify-content: center;
     align-items: flex-start;
-    gap: 2rem;
+    column-gap: 2rem;
+    row-gap: 4rem;
   }
 
   .nolist {
