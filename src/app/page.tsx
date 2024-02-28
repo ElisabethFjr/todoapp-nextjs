@@ -14,7 +14,6 @@ async function Home({ searchParams }: HomeProps) {
 
   // Fetch all Lists
   const lists = await getAllLists();
-  console.log("Listes", lists);
 
   return (
     <>
