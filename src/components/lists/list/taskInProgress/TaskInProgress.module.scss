@@ -1,6 +1,7 @@
 @import "variables";
 
 .task {
+  cursor: pointer;
   display: flex;
   gap: 0.5rem;
   .checkbox {
@@ -12,9 +13,9 @@
     }
   }
   .label {
+    cursor: pointer;
     flex-grow: 1;
     max-width: calc(100% - (13px + 0.5rem));
     overflow: hidden;
-    white-space: wrap;
   }
 }

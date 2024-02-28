@@ -1,6 +1,7 @@
 @import "variables";
 
 .task {
+  cursor: pointer;
   position: relative;
   display: flex;
   gap: 0.5rem;
@@ -9,6 +10,9 @@
     height: 13px;
     margin-top: 5px;
     z-index: 1;
+    &:hover {
+      border: 2px solid $grey;
+    }
   }
   .check {
     position: absolute;
@@ -17,6 +21,7 @@
     z-index: 0;
   }
   .label {
+    cursor: pointer;
     flex-grow: 1;
     max-width: calc(100% - (13px + 0.5rem));
     overflow: hidden;
