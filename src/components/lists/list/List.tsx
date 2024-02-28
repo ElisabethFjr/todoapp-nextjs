@@ -27,9 +27,6 @@ function List({ list }: ListProps) {
   const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>("");
 
-  console.log("List.tsx: La Liste", list);
-  console.log("List.tsx: useState tasks", tasks);
-
   //---HANDLING FUNCTIONS----
   // Handle Click to toggle the EditListForm modal
   const handleOpenEditModal = () => {
