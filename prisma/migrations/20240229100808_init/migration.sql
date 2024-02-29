@@ -3,6 +3,7 @@ CREATE TABLE "List" (
     "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "color" TEXT DEFAULT '#ffffff',
+    "position" SERIAL NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
