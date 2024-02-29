@@ -1,3 +1,5 @@
+import { List } from "@/@types";
+
 // Base URL
 const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 const headers = {
@@ -72,6 +74,21 @@ export async function updateColorList(listId: string, colorJSON: string) {
   if (!response.ok) {
     throw new Error(
       "Une erreur est survenue, la couleur n'a pas pu être modifiée."
+    );
+  }
+}
+
+// UPDATE Positions of all Lists
+export async function updatePositionsList(updatedLists: List[]) {
+  console.log("Call API", JSON.stringify(updatedLists));
+  const response = await fetch(`${baseURL}/api/list`, {
+    method: "PATCH",
+    headers: headers,
+    body: JSON.stringify(updatedLists),
+  });
+  if (!response.ok) {
+    throw new Error(
+      "Une erreur est survenue, la position n'a pas pu être modifiée."
     );
   }
 }

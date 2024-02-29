@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
-import { Task } from "@/@types";
+import { Task, List } from "@/@types";
 
 // GET "/api/list" All Lists with Tasks
 export async function GET(req: NextRequest) {
@@ -10,10 +10,38 @@ export async function GET(req: NextRequest) {
       include: {
         tasks: true, // Include tasks associated with the list
       },
-      orderBy: { createdAt: "asc" },
     });
+    // Sort Lists by position ASC
+    const sortedLists = lists.sort((a, b) => a.position - b.position);
+    return NextResponse.json(sortedLists);
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      {
+        message:
+          "Oops, une erreur s'est produite. Veuillez réessayer plus tard.",
+      },
+      { status: 500 }
+    );
+  }
+}
 
-    return NextResponse.json(lists);
+// PATCH "/api/lists" Update Lists with new positions (Drag N Drop)
+export async function PATCH(req: NextRequest) {
+  try {
+    const updatedLists = await req.json();
+
+    // Update all list's position in the database
+    await Promise.all(
+      updatedLists.map(async (list: List) => {
+        await prisma.list.update({
+          where: { id: list.id },
+          data: { position: list.position },
+        });
+      })
+    );
+    // Return the JSON updated List with new position
+    return NextResponse.json(updatedLists, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
