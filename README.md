@@ -1,8 +1,8 @@
-# TODO App NextJS
+# ToDo List App NextJS
 
 ## Description
 
-Here is a simple TODO App built whith NextJS and the ORM Prisma.
+Here is a simple ToDo List App built whith NextJS and the ORM Prisma.
 
 ## Link
 
@@ -14,6 +14,7 @@ https://todoapp-nextjs-2nej.vercel.app/
 - Prisma
 - Vercel
 - Postgres
+- React Beautiful DnD (Drag & Drop)
 
 ## Preview
 
