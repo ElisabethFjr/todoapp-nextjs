@@ -47,10 +47,10 @@ function Lists({ lists }: ListsProps) {
     updatedLists.forEach((item, index) => {
       item.position = index + 1;
     });
-    // Call Api to update position in database
-    await updatePositionsList(updatedLists);
     // Update State with new order listsData
     setListsData(updatedLists);
+    // Call Api to update position in database
+    await updatePositionsList(updatedLists);
   };
 
   // --- HOOKS ---
