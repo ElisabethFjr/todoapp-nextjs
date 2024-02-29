@@ -47,7 +47,7 @@ function Lists({ lists }: ListsProps) {
     <DragDropContext onDragEnd={handleOnDragEnd}>
       <div className={styles.container}>
         {listsData.length > 0 ? (
-          <Droppable droppableId="lists">
+          <Droppable droppableId="lists" type="COLUMN" direction="horizontal">
             {(provided) => (
               <ul
                 className={styles.lists}
