@@ -80,7 +80,6 @@ export async function updateColorList(listId: string, colorJSON: string) {
 
 // UPDATE Positions of all Lists
 export async function updatePositionsList(updatedLists: List[]) {
-  console.log("Call API", JSON.stringify(updatedLists));
   const response = await fetch(`${baseURL}/api/list`, {
     method: "PATCH",
     headers: headers,

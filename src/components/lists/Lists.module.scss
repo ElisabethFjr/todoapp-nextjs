@@ -10,11 +10,50 @@
     grid-template-columns: repeat(5, 1fr);
     justify-content: center;
     align-items: flex-start;
-    column-gap: 2rem;
     row-gap: 4rem;
+    .list {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   .nolist {
     margin: auto;
+  }
+}
+
+// Responsive screen < 1499px
+@media (max-width: 1499px) {
+  .container {
+    .lists {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+// Responsive screen < 1199px
+@media (max-width: 1199px) {
+  .container {
+    .lists {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+// Responsive screen < 899px
+@media (max-width: 899px) {
+  .container {
+    .lists {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+// Responsive screen < 599px
+@media (max-width: 599px) {
+  .container {
+    .lists {
+      grid-template-columns: 1fr;
+    }
   }
 }

@@ -81,6 +81,7 @@ function Lists({ lists }: ListsProps) {
                   >
                     {(provided) => (
                       <li
+                        className={styles.list}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
