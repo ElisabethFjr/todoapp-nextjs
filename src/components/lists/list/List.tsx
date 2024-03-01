@@ -29,6 +29,8 @@ function List({ list }: ListProps) {
   const [tasks, setTasks] = useState<Task[]>(list.tasks);
   const [isOpenEditListModal, setIsOpenEditListModal] =
     useState<boolean>(false);
+  console.log("list", isOpenEditListModal);
+
   const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>("");
 
@@ -50,7 +52,7 @@ function List({ list }: ListProps) {
 
   // Handle Click outside to close modals
   const paletteColorRef = useRef<HTMLFormElement>(null);
-  const editListFormRef = useRef<HTMLFormElement>(null);
+  const editListModalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
@@ -58,8 +60,8 @@ function List({ list }: ListProps) {
           paletteColorRef.current &&
           !paletteColorRef.current.contains(event.target as Node)) ||
         (isOpenEditListModal &&
-          editListFormRef.current &&
-          !editListFormRef.current.contains(event.target as Node))
+          editListModalRef.current &&
+          !editListModalRef.current.contains(event.target as Node))
       ) {
         setIsOpenPaletteColor(false);
         setIsOpenEditListModal(false);
@@ -189,10 +191,9 @@ function List({ list }: ListProps) {
       {isOpenEditListModal && (
         <EditListForm
           list={list}
-          closeModal={() => {
-            setIsOpenEditListModal(false);
-          }}
-          editListFormRef={editListFormRef}
+          isOpen={isOpenEditListModal}
+          setIsOpen={setIsOpenEditListModal}
+          editListModalRef={editListModalRef}
           setTasks={setTasks}
           setTitle={setTitle}
         />

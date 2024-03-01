@@ -1,110 +1,164 @@
 @import "variables";
 @import "mixins";
 
-.form {
-  display: flex;
-  flex-direction: column;
+.background {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-
-  // Title section
-  .title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-bottom: 1px solid $black;
-    .label {
-      @include visuallyHidden;
-    }
-    .input {
-      width: 100%;
-      height: 100%;
-      padding: 0.8rem;
-      border: none;
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-
-  // Add Task section
-  .addtask {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding-left: 1.6rem;
-    border-bottom: 1px solid $black;
-    height: 100%;
-    .input {
-      width: 100%;
-      height: 100%;
-      padding: 0.8rem 0;
-      border: none;
-      &:focus {
-        outline: none;
-      }
-    }
-  }
-
-  // Created Task Section
-  .tasks {
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .container {
+    position: relative;
+    z-index: 9999;
     display: flex;
     flex-direction: column;
-    width: 100%;
-    padding: 0.8rem 0.8rem 3rem 1.8rem;
-    .task {
-      position: relative;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    max-width: 600px;
+    background-color: $white;
+    border: 1px solid $black;
+    box-shadow: $shadow;
+    opacity: 0;
+    transform: translateY(-70%) scale(0.5);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    &.openAnimation {
+      transform: translateY(0%) scale(1);
+      opacity: 1;
+    }
+    &.closeAnimation {
+      transform: translateY(-70%) scale(0.5);
+      opacity: 0;
+      transition-delay: 0.3s;
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+    &.white {
+      background-color: $white;
+    }
+    .form {
       display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      .checkbox {
-        cursor: default;
-      }
-      .text {
-        outline: none;
-        width: 100%;
-      }
-      &:hover {
-        .delete,
-        .grip {
-          opacity: 1;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+
+      // Title section
+      .title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-bottom: 1px solid $black;
+        .label {
+          @include visuallyHidden;
+        }
+        .input {
+          width: 100%;
+          height: 100%;
+          padding: 0.8rem;
+          border: none;
+          &:focus {
+            outline: none;
+          }
         }
       }
+
+      // Add Task section
+      .addtask {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding-left: 1.6rem;
+        border-bottom: 1px solid $black;
+        height: 100%;
+        .input {
+          width: 100%;
+          height: 100%;
+          padding: 0.8rem 0;
+          border: none;
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      // Created Task Section
+      .tasks {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0.8rem 0.8rem 3rem 1.8rem;
+        .task {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 0.6rem;
+          .checkbox {
+            cursor: default;
+          }
+          .text {
+            outline: none;
+            width: 100%;
+          }
+          &:hover {
+            .delete,
+            .grip {
+              opacity: 1;
+            }
+          }
+        }
+        .delete {
+          opacity: 0;
+          padding: 0.5rem;
+          border: 1px solid transparent;
+          border-radius: 50%;
+          transition: background-color 0.3s ease-in-out;
+          &:hover {
+            background-color: $greylight;
+          }
+        }
+        .grip {
+          position: absolute;
+          left: -20px;
+          opacity: 0;
+        }
+      }
+
+      .button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.5rem;
+        margin-bottom: 2rem;
+        margin-left: auto;
+        margin-right: auto;
+        width: fit-content;
+        background-color: $violet;
+        font-weight: 500;
+        border: 1px solid $black;
+        box-shadow: $shadow;
+        transition: all 0.3s ease-in-out;
+      }
+      .button:hover {
+        box-shadow: 2px 2px 0px black;
+        transform: translateX(2px) translateY(2px);
+      }
     }
-    .delete {
-      opacity: 0;
+    .close {
+      position: absolute;
+      z-index: 99;
+      top: 4px;
+      right: 6px;
       padding: 0.5rem;
       border: 1px solid transparent;
       border-radius: 50%;
-      transition: background-color 0.3s ease-in-out;
+      transition: all 0.3s ease-in-out;
       &:hover {
-        background-color: $greylight;
+        background-color: $iconHover;
       }
     }
-    .grip {
-      position: absolute;
-      left: -20px;
-      opacity: 0;
-    }
-  }
-
-  .button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1.5rem;
-    margin-bottom: 2rem;
-    margin-left: auto;
-    margin-right: auto;
-    width: fit-content;
-    background-color: $violet;
-    font-weight: 500;
-    border: 1px solid $black;
-    box-shadow: $shadow;
-    transition: all 0.3s ease-in-out;
-  }
-  .button:hover {
-    box-shadow: 2px 2px 0px black;
-    transform: translateX(2px) translateY(2px);
   }
 }

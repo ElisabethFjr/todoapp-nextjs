@@ -1,11 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import DOMPurify from "dompurify";
 import { addList } from "@/lib/api";
-import ModalContainer from "../modalContainer/ModalContainer";
 import { GripVertical, Plus, XLg } from "react-bootstrap-icons";
 import { Task } from "@/@types";
 import styles from "./AddListForm.module.scss";
@@ -19,6 +18,7 @@ function AddListForm() {
   const [title, setTitle] = useState<string>("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskValue, setTaskValue] = useState<string>("");
+  const [showModal, setShowModal] = useState(false);
 
   // Declaration task input ref
   const taskInputRef = useRef<HTMLInputElement>(null);
@@ -94,6 +94,18 @@ function AddListForm() {
     }
   };
 
+  // Show the modal
+  useEffect(() => {
+    setShowModal(true);
+  }, []);
+  // Handle Close Add List Modal
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setTimeout(() => {
+      router.back(); // Close the modal
+    }, 300);
+  };
+
   // Handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -108,83 +120,100 @@ function AddListForm() {
     // Fetch Api
     await addList(formDataJSON);
     // Close modal and remove search param
-    await handleClose();
+    await handleCloseModal();
     router.refresh();
   };
 
-  const handleClose = () => {
-    router.back(); // Close the modal
-  };
-
   return (
-    <ModalContainer handleClose={handleClose}>
-      <form
-        className={styles.form}
-        onSubmit={handleSubmit}
-        onKeyDown={handleFormKeyPress}
+    <div className={styles.background}>
+      <div
+        className={`${styles.container} ${
+          showModal ? styles.openAnimation : styles.closeAnimation
+        }`}
       >
-        {/* Add Title Section */}
-        <div className={styles.title}>
-          <label className={styles.label} htmlFor="title" />
-          <input
-            className={styles.input}
-            id="title"
-            name="title"
-            type="text"
-            placeholder="Titre"
-            value={title}
-            onChange={handleTitleChange}
-            onKeyDown={handleEnterPressFocusTask} // Handle Enter key press to move focus to task input
-            required
-          />
-        </div>
-        {/* Add Task Section */}
-        <div className={styles.addtask}>
-          <label className={styles.label} htmlFor="task">
-            <Plus />
-          </label>
-          <input
-            ref={taskInputRef} // Reference to the task input
-            className={styles.input}
-            id="task"
-            name="task"
-            type="text"
-            placeholder="Nouvelle tâche"
-            value={taskValue}
-            onChange={handleTaskChange}
-            onKeyDown={handleEnterPressAddTask} // Handle Enter key press to add a new task in the list
-          />
-        </div>
-        {/* Tasks List Section + Edit/Delete task */}
-        <ul className={styles.tasks}>
-          {tasks.map((task) => (
-            <li className={styles.task} key={task.id}>
-              <input className={styles.checkbox} type="checkbox" disabled />
-              <input
-                className={styles.text}
-                type="text"
-                value={task.text}
-                onChange={(e) => handleTaskTextChange(task.id, e.target.value)}
-              />
-              <button
-                type="button"
-                className={styles.delete}
-                onClick={() => handleDeleteTask(task.id)}
-                aria-label="Supprimer la tâche"
-                title="Supprimer"
-              >
-                <XLg className={styles.icon} size={15} />
-              </button>
-              <GripVertical className={styles.grip} size={20} color="#c4a1ff" />
-            </li>
-          ))}
-        </ul>
-        {/* Button Form Submission */}
-        <button className={styles.button} type="submit">
-          Créer
+        <form
+          className={styles.form}
+          onSubmit={handleSubmit}
+          onKeyDown={handleFormKeyPress}
+        >
+          {/* Add Title Section */}
+          <div className={styles.title}>
+            <label className={styles.label} htmlFor="title" />
+            <input
+              className={styles.input}
+              id="title"
+              name="title"
+              type="text"
+              placeholder="Titre"
+              value={title}
+              onChange={handleTitleChange}
+              onKeyDown={handleEnterPressFocusTask} // Handle Enter key press to move focus to task input
+              required
+            />
+          </div>
+          {/* Add Task Section */}
+          <div className={styles.addtask}>
+            <label className={styles.label} htmlFor="task">
+              <Plus />
+            </label>
+            <input
+              ref={taskInputRef} // Reference to the task input
+              className={styles.input}
+              id="task"
+              name="task"
+              type="text"
+              placeholder="Nouvelle tâche"
+              value={taskValue}
+              onChange={handleTaskChange}
+              onKeyDown={handleEnterPressAddTask} // Handle Enter key press to add a new task in the list
+            />
+          </div>
+          {/* Tasks List Section + Edit/Delete task */}
+          <ul className={styles.tasks}>
+            {tasks.map((task) => (
+              <li className={styles.task} key={task.id}>
+                <input className={styles.checkbox} type="checkbox" disabled />
+                <input
+                  className={styles.text}
+                  type="text"
+                  value={task.text}
+                  onChange={(e) =>
+                    handleTaskTextChange(task.id, e.target.value)
+                  }
+                />
+                <button
+                  type="button"
+                  className={styles.delete}
+                  onClick={() => handleDeleteTask(task.id)}
+                  aria-label="Supprimer la tâche"
+                  title="Supprimer"
+                >
+                  <XLg className={styles.icon} size={15} />
+                </button>
+                <GripVertical
+                  className={styles.grip}
+                  size={20}
+                  color="#c4a1ff"
+                />
+              </li>
+            ))}
+          </ul>
+          {/* Button Form Submission */}
+          <button className={styles.button} type="submit">
+            Créer
+          </button>
+        </form>
+        <button
+          type="button"
+          className={styles.close}
+          onClick={handleCloseModal}
+          aria-label="Fermer la modale"
+          title="Fermer"
+        >
+          <XLg className={styles.icon} size={18} />
         </button>
-      </form>
-    </ModalContainer>
+      </div>
+    </div>
   );
 }
 
