@@ -99,9 +99,12 @@ function Lists({ lists }: ListsProps) {
             // If Lists array > 0, display all Sortable Lists
             <ul className={styles.lists}>
               {listsData.map((list: ListType) => (
-                <SortableList key={list.id} id={list.id}>
-                  <List list={list} isDragging={isDragging} />
-                </SortableList>
+                <List
+                  list={list}
+                  isDragging={isDragging}
+                  id={list.id}
+                  key={list.id}
+                />
               ))}
             </ul>
           ) : (
