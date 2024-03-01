@@ -1,17 +1,26 @@
 "use client";
 
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DropResult,
-} from "react-beautiful-dnd";
 import { useEffect, useState } from "react";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  rectSortingStrategy,
+} from "@dnd-kit/sortable";
+import SortableList from "./sortableList/SortableList";
 import List from "./list/List";
 import NoList from "./noList/NoList";
-import styles from "./Lists.module.scss";
 import { List as ListType } from "@/@types";
 import { updatePositionsList } from "@/lib/api";
+import styles from "./Lists.module.scss";
 
 interface ListsProps {
   lists: ListType[];
@@ -19,90 +28,91 @@ interface ListsProps {
 
 function Lists({ lists }: ListsProps) {
   // ---VARIABLES----
-  // Declaration List Data state
+  // Declaration states
   const [listsData, setListsData] = useState<ListType[]>(lists);
-
-  // ---HANDLING FUNCTIONS----
-  // Handle Drag and Drop reordering
-  const handleOnDragEnd = async (result: DropResult) => {
-    const { source, destination } = result;
-
-    // If no destination or list's position doesn't change, return
-    if (
-      !destination ||
-      (destination.index === source.index &&
-        destination.droppableId === source.droppableId)
-    ) {
-      return;
-    }
-
-    // Clone the actual listsData Array
-    const updatedLists = Array.from(listsData);
-    // Remove the dragged list from its original position
-    const [reorderedItem] = updatedLists.splice(result.source.index, 1);
-    // Insert the dragged list into the new position
-    updatedLists.splice(destination.index, 0, reorderedItem);
-
-    // Reorganise each list's position based on the new array order
-    updatedLists.forEach((item, index) => {
-      item.position = index + 1;
-    });
-    // Update State with new order listsData
-    setListsData(updatedLists);
-    // Call Api to update position in database
-    await updatePositionsList(updatedLists);
-  };
+  const [isDragging, setIsDragging] = useState<boolean>(false);
 
   // --- HOOKS ---
-  // Update de Lists Components when lists prop changes
+  // Update Lists Components when lists prop changes
   useEffect(() => {
     setListsData(lists);
   }, [lists]);
 
+  // --- DRAG N DROP (Dnd-kit)---
+  // Initializing drag and drop sensors
+  const sensors = useSensors(
+    useSensor(PointerSensor), // Mouse sensor
+    useSensor(KeyboardSensor) // Keyboard sensor
+  );
+
+  // Handle Drag Start Event
+  const handleDragStart = () => {
+    setIsDragging(true);
+  };
+
+  // Handle Drag End Event
+  const handleDragEnd = async (event: DragEndEvent) => {
+    const { active, over } = event;
+    // Check if any of the required variables are missing or if the active and over elements are the same
+    if (
+      !active || // If no active draggable list
+      !over || // If there is no droppable container
+      active.id === null || // If the active draggable list has no id
+      over.id === null || // If the droppable container has no id
+      active.id === over.id // If the active draggable list and the droppable container are the same
+    ) {
+      setIsDragging(false); // Reset dragging state
+      return;
+    }
+
+    // Find array index of the active dragged list
+    const oldIndex = listsData.findIndex((list) => list.id === active.id);
+    // Find new array index of the dropped list
+    const newIndex = listsData.findIndex((list) => list.id === over.id);
+    // Reorganise each list's position based on the new array order
+    const updatedLists = arrayMove(listsData, oldIndex, newIndex).map(
+      (list, index) => ({
+        ...list,
+        position: index + 1,
+      })
+    );
+    setIsDragging(false); // Reset dragging state
+    setListsData(updatedLists); // Update Lists data with new order
+    await updatePositionsList(updatedLists); // Call Api to update each list's position in database
+  };
+
   return (
     // Wrap Lists to add Drag and Drop Context to the component
-    <DragDropContext onDragEnd={handleOnDragEnd}>
-      <div className={styles.container}>
-        {listsData.length > 0 ? (
-          // Make the Lists <ul> a Droppable area
-          <Droppable droppableId="lists" type="COLUMN" direction="horizontal">
-            {(provided) => (
-              <ul
-                className={styles.lists}
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {listsData.map((list: ListType, index: number) => (
-                  // Make all List elem Draggable
-                  <Draggable
-                    key={list.id}
-                    draggableId={list.id.toString()}
-                    index={index}
-                  >
-                    {(provided) => (
-                      <li
-                        className={styles.list}
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <List list={list} />
-                      </li>
-                    )}
-                  </Draggable>
-                ))}
-                {/* Add the placeholder from React Beautiful DnD */}
-                {provided.placeholder}
-              </ul>
-            )}
-          </Droppable>
-        ) : (
-          <div className={styles.nolist}>
-            <NoList />
-          </div>
-        )}
-      </div>
-    </DragDropContext>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      {/* Add Sortable Context */}
+      <SortableContext
+        items={listsData.map((list) => list.id)}
+        strategy={rectSortingStrategy}
+      >
+        <div className={styles.container}>
+          {listsData.length > 0 ? (
+            // If Lists array > 0, display all Sortable Lists
+            <ul className={styles.lists}>
+              {listsData.map((list: ListType) => (
+                <SortableList key={list.id} id={list.id}>
+                  <List list={list} isDragging={isDragging} />
+                </SortableList>
+              ))}
+            </ul>
+          ) : (
+            // If no List, display noList component
+            <div className={styles.nolist}>
+              <NoList />
+            </div>
+          )}
+        </div>
+      </SortableContext>
+    </DndContext>
   );
 }
 
