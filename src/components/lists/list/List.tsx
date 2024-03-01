@@ -17,23 +17,23 @@ import { Palette, Pencil, XLg } from "react-bootstrap-icons";
 import styles from "./List.module.scss";
 interface ListProps {
   list: List;
+  isDragging: boolean;
 }
 
-function List({ list }: ListProps) {
+function List({ list, isDragging }: ListProps) {
   // --- HOOKS ---
   const router = useRouter();
 
-  //---VARIABLES----
+  // ---VARIABLES----
   // Declaration states
   const [title, setTitle] = useState<string>(list.title);
   const [tasks, setTasks] = useState<Task[]>(list.tasks);
   const [isOpenEditListModal, setIsOpenEditListModal] =
     useState<boolean>(false);
-
   const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>("");
 
-  //---HANDLING FUNCTIONS----
+  // ---HANDLING FUNCTIONS----
   // Handle Click to toggle the EditListForm modal
   const handleOpenEditModal = () => {
     setIsOpenEditListModal(!isOpenEditListModal);
@@ -111,7 +111,7 @@ function List({ list }: ListProps) {
 
   return (
     <article
-      className={styles.card}
+      className={`${styles.card} ${isDragging ? styles.dragging : ""}`}
       style={{ backgroundColor: selectedColor ? selectedColor : list.color }}
     >
       {/* Title Section */}

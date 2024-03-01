@@ -7,6 +7,12 @@
   border: 1px solid $black;
   box-shadow: $shadow;
   padding-bottom: 5rem;
+  cursor: grab;
+
+  &.dragging {
+    cursor: grabbing;
+  }
+
   &:hover {
     .icons {
       opacity: 1;
