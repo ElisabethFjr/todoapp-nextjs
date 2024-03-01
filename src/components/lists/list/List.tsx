@@ -29,7 +29,6 @@ function List({ list }: ListProps) {
   const [tasks, setTasks] = useState<Task[]>(list.tasks);
   const [isOpenEditListModal, setIsOpenEditListModal] =
     useState<boolean>(false);
-  console.log("list", isOpenEditListModal);
 
   const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>("");
