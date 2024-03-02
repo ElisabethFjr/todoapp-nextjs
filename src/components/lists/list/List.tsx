@@ -50,6 +50,7 @@ function List({ list, isDragging, id }: ListProps) {
     useState<boolean>(false);
   const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>("");
+  console.log(isOpenPaletteColor);
 
   // ---HANDLING FUNCTIONS----
   // Handle Click to toggle the EditListForm modal
@@ -128,11 +129,7 @@ function List({ list, isDragging, id }: ListProps) {
   };
 
   return (
-    <li
-      className={`${styles.container} ${isDragging ? styles.dragging : ""}`}
-      ref={setNodeRef}
-      style={style}
-    >
+    <li className={`${styles.container} ${isDragging ? styles.dragging : ""}`}>
       <div className={styles.icons}>
         <button
           className={`${styles.icon} ${styles.palette}`}
@@ -159,8 +156,10 @@ function List({ list, isDragging, id }: ListProps) {
       <div
         className={`${styles.card} ${isDragging ? styles.dragging : ""}`}
         style={{
+          ...style,
           backgroundColor: selectedColor ? selectedColor : list.color,
         }}
+        ref={setNodeRef}
       >
         <button
           className={`${styles.grab} ${isDragging ? styles.dragging : ""}`}

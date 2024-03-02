@@ -81,15 +81,21 @@ function Lists({ lists }: ListsProps) {
   };
 
   return (
+    // Wrap Lists to add Drag and Drop Context to the component
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      <div className={styles.container}>
-        {listsData.length > 0 ? (
-          <SortableContext items={listsData} strategy={rectSortingStrategy}>
+      {/* Add Sortable Context */}
+      <SortableContext
+        items={listsData.map((list) => list.id)}
+        strategy={rectSortingStrategy}
+      >
+        <div className={styles.container}>
+          {listsData.length > 0 ? (
+            // If Lists array > 0, display all Sortable Lists
             <ul className={styles.lists}>
               {listsData.map((list: ListType) => (
                 <List
@@ -100,13 +106,14 @@ function Lists({ lists }: ListsProps) {
                 />
               ))}
             </ul>
-          </SortableContext>
-        ) : (
-          <div className={styles.nolist}>
-            <NoList />
-          </div>
-        )}
-      </div>
+          ) : (
+            // If no List, display noList component
+            <div className={styles.nolist}>
+              <NoList />
+            </div>
+          )}
+        </div>
+      </SortableContext>
     </DndContext>
   );
 }
