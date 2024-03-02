@@ -1,7 +1,6 @@
 @import "variables";
 
 .task {
-  cursor: pointer;
   position: relative;
   display: flex;
   gap: 0.5rem;
@@ -21,7 +20,6 @@
     z-index: 0;
   }
   .label {
-    cursor: pointer;
     flex-grow: 1;
     max-width: calc(100% - (13px + 0.5rem));
     overflow: hidden;

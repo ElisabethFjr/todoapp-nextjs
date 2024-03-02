@@ -81,34 +81,32 @@ function Lists({ lists }: ListsProps) {
   };
 
   return (
-    // Wrap Lists to add Drag and Drop Context to the component
     <DndContext
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
     >
-      {/* Add Sortable Context */}
-      <SortableContext
-        items={listsData.map((list) => list.id)}
-        strategy={rectSortingStrategy}
-      >
-        <div className={styles.container}>
-          {listsData.length > 0 ? (
-            // If Lists array > 0, display all Sortable Lists
+      <div className={styles.container}>
+        {listsData.length > 0 ? (
+          <SortableContext items={listsData} strategy={rectSortingStrategy}>
             <ul className={styles.lists}>
               {listsData.map((list: ListType) => (
-                <List list={list} isDragging={isDragging} key={list.id} />
+                <List
+                  list={list}
+                  isDragging={isDragging}
+                  id={list.id}
+                  key={list.id}
+                />
               ))}
             </ul>
-          ) : (
-            // If no List, display noList component
-            <div className={styles.nolist}>
-              <NoList />
-            </div>
-          )}
-        </div>
-      </SortableContext>
+          </SortableContext>
+        ) : (
+          <div className={styles.nolist}>
+            <NoList />
+          </div>
+        )}
+      </div>
     </DndContext>
   );
 }
