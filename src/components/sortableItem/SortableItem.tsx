@@ -1,13 +1,14 @@
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import styles from "./SortableList.module.scss";
 
-interface SortableListProps {
+interface SortableItemProps {
   id: string;
+  className?: string;
+  style?: React.CSSProperties;
   children: React.ReactNode;
 }
 
-function SortableList({ id, children }: SortableListProps) {
+function SortableItem({ id, className, style, children }: SortableItemProps) {
   // --- DND HOOKS ---
   // Destructuring properties from the useSortable hook
   const { attributes, listeners, setNodeRef, transform } = useSortable({ id });
@@ -21,21 +22,22 @@ function SortableList({ id, children }: SortableListProps) {
   };
 
   // Convert the transform object to a string to apply CSS style
-  const style = {
+  const itemStyle = {
+    ...style,
     transform: CSS.Transform.toString(adjustedTransform),
   };
 
   return (
-    <li
-      className={styles.sortable}
+    <div
+      className={className} // Custom className
       ref={setNodeRef} // Set a reference to the list item node
-      style={style} // Apply the transform style
+      style={itemStyle} // Apply the item & transform style
       {...attributes} // Spread attributes for DnD (aria, tabIndex,...)
       {...listeners} // Spread event listerners for DnD
     >
       {children}
-    </li>
+    </div>
   );
 }
 
-export default SortableList;
+export default SortableItem;

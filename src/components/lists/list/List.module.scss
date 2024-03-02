@@ -1,5 +1,6 @@
 @import "variables";
 
+// List Container
 .container {
   position: relative;
   display: flex;
@@ -15,6 +16,8 @@
       }
     }
   }
+
+  // --- List Card ---
   .card {
     width: 238px;
     background-color: $white;
@@ -22,11 +25,9 @@
     box-shadow: $shadow;
     padding-bottom: 5rem;
     cursor: grab;
-
     &.dragging {
       cursor: grabbing;
     }
-
     &:hover {
       .icons {
         opacity: 1;
@@ -59,7 +60,7 @@
     }
   }
 
-  // Hover Icons
+  // --- Hover Icons ---
   .icons {
     position: absolute;
     z-index: 2;

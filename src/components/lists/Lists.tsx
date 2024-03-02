@@ -15,7 +15,6 @@ import {
   SortableContext,
   rectSortingStrategy,
 } from "@dnd-kit/sortable";
-import SortableList from "./sortableList/SortableList";
 import List from "./list/List";
 import NoList from "./noList/NoList";
 import { List as ListType } from "@/@types";
@@ -99,12 +98,7 @@ function Lists({ lists }: ListsProps) {
             // If Lists array > 0, display all Sortable Lists
             <ul className={styles.lists}>
               {listsData.map((list: ListType) => (
-                <List
-                  list={list}
-                  isDragging={isDragging}
-                  id={list.id}
-                  key={list.id}
-                />
+                <List list={list} isDragging={isDragging} key={list.id} />
               ))}
             </ul>
           ) : (

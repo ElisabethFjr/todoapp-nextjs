@@ -2,12 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  deleteList,
-  getAllTasks,
-  getListById,
-  updateStatusTask,
-} from "@/lib/api";
+import { deleteList, updateStatusTask } from "@/lib/api";
 import { List, Task } from "@/@types";
 import TaskInProgress from "./taskInProgress/TaskInProgress";
 import TaskCompleted from "./taskCompleted/TaskCompleted";
@@ -15,34 +10,15 @@ import PaletteColor from "@/components/modals/paletteColor/PaletteColor";
 import EditListForm from "@/components/modals/editListForm/EditListForm";
 import { Palette, Pencil, XLg } from "react-bootstrap-icons";
 import styles from "./List.module.scss";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import SortableItem from "@/components/sortableItem/SortableItem";
 interface ListProps {
   list: List;
   isDragging: boolean;
-  id: string;
 }
 
-function List({ list, isDragging, id }: ListProps) {
+function List({ list, isDragging }: ListProps) {
   // --- HOOKS ---
   const router = useRouter();
-
-  // --- DND HOOKS ---
-  // Destructuring properties from the useSortable hook
-  const { attributes, listeners, setNodeRef, transform } = useSortable({ id });
-
-  // Adjust the transform object by setting scaleX and scaleY to 1 to avoid scaling issues
-  const adjustedTransform = {
-    scaleX: 1,
-    scaleY: 1,
-    x: transform?.x ?? 0,
-    y: transform?.y ?? 0,
-  };
-
-  // Convert the transform object to a string to apply CSS style
-  const style = {
-    transform: CSS.Transform.toString(adjustedTransform),
-  };
 
   // ---VARIABLES----
   // Declaration states
@@ -130,7 +106,7 @@ function List({ list, isDragging, id }: ListProps) {
   };
 
   return (
-    <div className={`${styles.container} ${isDragging ? styles.dragging : ""}`}>
+    <li className={`${styles.container} ${isDragging ? styles.dragging : ""}`}>
       <div className={styles.icons}>
         <button
           className={`${styles.icon} ${styles.palette}`}
@@ -154,15 +130,12 @@ function List({ list, isDragging, id }: ListProps) {
           <XLg size={16} title="Supprimer la liste" />
         </button>
       </div>
-      <div
+      <SortableItem
         className={`${styles.card} ${isDragging ? styles.dragging : ""}`}
         style={{
-          ...style,
           backgroundColor: selectedColor ? selectedColor : list.color,
         }}
-        ref={setNodeRef}
-        {...attributes}
-        {...listeners}
+        id={list.id}
       >
         <h2 className={styles.title}>{title}</h2>
         {inProgressTasks.length > 0 && (
@@ -198,7 +171,7 @@ function List({ list, isDragging, id }: ListProps) {
             </ul>
           </>
         )}
-      </div>
+      </SortableItem>
       {isOpenPaletteColor && (
         <PaletteColor
           onSelectColor={handleSelectColor}
@@ -217,7 +190,7 @@ function List({ list, isDragging, id }: ListProps) {
           setTitle={setTitle}
         />
       )}
-    </div>
+    </li>
   );
 }
 
