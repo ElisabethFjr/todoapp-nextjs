@@ -20,8 +20,6 @@ interface ListProps {
 }
 
 function List({ list, isDragging, id }: ListProps) {
-  console.log(isDragging);
-
   // --- HOOKS ---
   const router = useRouter();
 
@@ -60,6 +58,7 @@ function List({ list, isDragging, id }: ListProps) {
 
   // Handle Click to toggle the PaletteColor
   const handleOpenPaletteColor = () => {
+    console.log("cliqué");
     setIsOpenPaletteColor(!isOpenPaletteColor);
   };
 
@@ -69,14 +68,14 @@ function List({ list, isDragging, id }: ListProps) {
   };
 
   // Handle Click outside to close modals
-  const paletteColorRef = useRef<HTMLFormElement>(null);
+  const ListRef = useRef<HTMLLIElement>(null);
   const editListModalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         (isOpenPaletteColor &&
-          paletteColorRef.current &&
-          !paletteColorRef.current.contains(event.target as Node)) ||
+          ListRef.current &&
+          !ListRef.current.contains(event.target as Node)) ||
         (isOpenEditListModal &&
           editListModalRef.current &&
           !editListModalRef.current.contains(event.target as Node))
@@ -129,7 +128,10 @@ function List({ list, isDragging, id }: ListProps) {
   };
 
   return (
-    <li className={`${styles.container} ${isDragging ? styles.dragging : ""}`}>
+    <li
+      className={`${styles.container} ${isDragging ? styles.dragging : ""}`}
+      ref={ListRef}
+    >
       <div className={styles.icons}>
         <button
           className={`${styles.icon} ${styles.palette}`}
@@ -207,7 +209,6 @@ function List({ list, isDragging, id }: ListProps) {
         <PaletteColor
           onSelectColor={handleSelectColor}
           selectedColor={selectedColor}
-          paletteColorRef={paletteColorRef}
           listId={list.id}
         />
       )}

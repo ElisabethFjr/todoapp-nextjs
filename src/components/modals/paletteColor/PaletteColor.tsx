@@ -18,14 +18,12 @@ const colors = [
 interface PaletteColorProps {
   onSelectColor: (color: string) => void;
   selectedColor: string;
-  paletteColorRef: RefObject<HTMLFormElement>;
   listId: string;
 }
 
 function PaletteColor({
   onSelectColor,
   selectedColor,
-  paletteColorRef,
   listId,
 }: PaletteColorProps) {
   const [selected, setSelected] = useState<string>(selectedColor);
@@ -38,7 +36,7 @@ function PaletteColor({
   };
 
   return (
-    <form className={styles.form} ref={paletteColorRef}>
+    <form className={styles.form}>
       <ul className={styles.colors}>
         {colors.map((color) => (
           <li className={styles.color} key={nanoid()}>
