@@ -108,6 +108,7 @@ function List({ list, isDragging, id }: ListProps) {
       is_completed: !taskToUpdate?.is_completed,
     };
     // Call API to update the task's is_completed status
+    console.log(updatedTask);
     await updateStatusTask(list.id, taskId, updatedTask.is_completed);
   };
 

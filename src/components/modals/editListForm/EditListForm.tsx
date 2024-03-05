@@ -97,6 +97,7 @@ function EditListForm({
     const updatedTasks = formTasks.map((task) =>
       task.id === taskId ? { ...task, is_completed: !task.is_completed } : task
     );
+    console.log(updatedTasks);
     setFormTasks(updatedTasks);
   };
 
@@ -289,9 +290,7 @@ function EditListForm({
                       onChange={() => handleToggleTask(task.id)}
                       checked={task.is_completed}
                     />
-                    <label className={styles.text} htmlFor={task.id}>
-                      {task.text}
-                    </label>
+                    <label className={styles.text}>{task.text}</label>
                     <button
                       type="button"
                       className={styles.delete}
