@@ -18,4 +18,4 @@ https://todoapp-nextjs-2nej.vercel.app/
 
 ## Preview
 
-![TODO App NextJS](/docs/Home.PNG)
+![TODO App NextJS](/docs/home.png)
