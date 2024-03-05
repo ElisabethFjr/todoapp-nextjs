@@ -242,6 +242,7 @@ function EditListForm({
                       onChange={(e) =>
                         handleTaskTextChange(task.id, e.target.value)
                       }
+                      required
                     />
                     <button
                       type="button"

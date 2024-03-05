@@ -61,6 +61,17 @@ export async function PATCH(
     const body = await req.json();
     const { title, tasks } = body;
 
+    // Checking validation schemas
+    const validationResult = FormSchema.safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        {
+          message: "Le format de données n'est pas respecté.",
+        },
+        { status: 400 }
+      );
+    }
+
     // Check the id on the URL
     if (!listId) {
       return NextResponse.json(
@@ -69,13 +80,18 @@ export async function PATCH(
       );
     }
 
-    // Checking validation schemas
-    const validationResult = FormSchema.safeParse(body);
-    if (!validationResult.success) {
+    // Check if title is provided in the request body
+    if (!title) {
       return NextResponse.json(
-        {
-          message: "Le format de données n'est pas respecté.",
-        },
+        { message: "Le titre est obligatoire !" },
+        { status: 400 }
+      );
+    }
+
+    // If tasks, check if text is provided in the request body for every tasks
+    if (tasks && tasks.some((task: any) => !task.text)) {
+      return NextResponse.json(
+        { message: "La tâche doit contenir un texte !" },
         { status: 400 }
       );
     }
@@ -119,7 +135,7 @@ export async function PATCH(
   }
 }
 
-// DELETE "/api/list/[listId]" Delete a list with its tasks
+// DELETE "/api/list/[listId]" Delete a list with all tasks
 export async function DELETE(
   req: NextRequest,
   { params }: { params: { listId: string } }

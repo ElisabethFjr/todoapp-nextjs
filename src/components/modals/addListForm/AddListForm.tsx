@@ -180,6 +180,7 @@ function AddListForm() {
                   onChange={(e) =>
                     handleTaskTextChange(task.id, e.target.value)
                   }
+                  required
                 />
                 <button
                   type="button"

@@ -9,7 +9,7 @@ const chivo = Chivo({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "ToDoApp",
   description:
-    "ToDoApp is a task management application created with Next.js and Prisma.",
+    "ToDoApp is a List management application created with Next.js and Prisma.",
 };
 
 export default function RootLayout({

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import z from "zod";
 
 // GET "/api/list/[listId]/task" All Tasks from a list
 export async function GET(
@@ -40,10 +41,38 @@ export async function POST(
   req: NextRequest,
   { params }: { params: { listId: string } }
 ) {
+  // Get the list id from params
   const listId = params.listId;
+
+  // Validation schema
+  const TaskFormSchema = z.object({
+    text: z.string(),
+    is_completed: z.boolean(),
+  });
+
   try {
     const body = await req.json();
     const { text, is_completed } = body;
+
+    // Check is text is provided in the body
+    if (!text) {
+      return NextResponse.json(
+        { message: "La tâche doit contenir un texte !" },
+        { status: 400 }
+      );
+    }
+
+    // Checking validation schemas
+    const validationResult = TaskFormSchema.safeParse(body);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        {
+          message: "Le format de données n'est pas respecté.",
+        },
+        { status: 400 }
+      );
+    }
+
     // Check if the list ID is present in the URL
     if (!listId) {
       return NextResponse.json(

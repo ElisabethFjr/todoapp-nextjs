@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { Task, List } from "@/@types";
+import TaskInProgress from "@/components/lists/list/taskInProgress/TaskInProgress";
 
 // GET "/api/list" All Lists with Tasks
 export async function GET(req: NextRequest) {
@@ -28,8 +29,37 @@ export async function GET(req: NextRequest) {
 
 // PATCH "/api/lists" Update Lists with new positions (Drag N Drop)
 export async function PATCH(req: NextRequest) {
+  // Validation schema
+  const UpdateListsSchema = z.array(
+    z.object({
+      id: z.string(),
+      position: z.number(),
+      color: z.string(),
+      title: z.string(),
+      tasks: z
+        .array(
+          z.object({
+            text: z.string(),
+            is_completed: z.boolean(),
+          })
+        )
+        .nullable(),
+    })
+  );
+
   try {
     const updatedLists = await req.json();
+
+    // Checking validation schemas
+    const validationResult = UpdateListsSchema.safeParse(updatedLists);
+    if (!validationResult.success) {
+      return NextResponse.json(
+        {
+          message: "Le format de données n'est pas respecté.",
+        },
+        { status: 400 }
+      );
+    }
 
     // Update all list's position in the database
     await Promise.all(
@@ -88,6 +118,14 @@ export async function POST(req: NextRequest) {
     if (!title) {
       return NextResponse.json(
         { message: "Veuillez renseigner un titre !" },
+        { status: 400 }
+      );
+    }
+
+    // If tasks, check if text is provided in the request body for every tasks
+    if (tasks && tasks.some((task: any) => !task.text)) {
+      return NextResponse.json(
+        { message: "La tâche doit contenir un texte !" },
         { status: 400 }
       );
     }
