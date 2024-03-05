@@ -179,6 +179,7 @@ function List({ list, isDragging, id }: ListProps) {
           className={`${styles.grab} ${isDragging ? styles.dragging : ""}`}
           {...attributes}
           {...listeners}
+          type="button"
         >
           <GripVertical size={20} color="#7d7d7d" />
         </button>
@@ -203,6 +204,7 @@ function List({ list, isDragging, id }: ListProps) {
                     ? `${styles.description} ${styles.reset}`
                     : styles.description
                 }`}
+                type="button"
                 onClick={handleShowCompletedTasks}
                 aria-label="Afficher les tâches complétées."
                 title="Afficher les tâches complétées."

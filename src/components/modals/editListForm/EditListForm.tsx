@@ -14,6 +14,7 @@ import { deleteTask, updateList } from "@/lib/api";
 import {
   Check,
   ChevronDown,
+  ChevronRight,
   GripVertical,
   Plus,
   XLg,
@@ -47,6 +48,9 @@ function EditListForm({
   const [taskValue, setTaskValue] = useState<string>("");
   const [formTasks, setFormTasks] = useState<Task[]>(list.tasks);
   const [showModal, setShowModal] = useState(false);
+  const [showCompletedTasks, setShowCompletedTasks] = useState<boolean>(false);
+  console.log("completed", showCompletedTasks);
+  console.log("modal", showModal);
 
   // Declaration task input ref
   const taskInputRef = useRef<HTMLInputElement>(null); // Ref for task input
@@ -130,12 +134,22 @@ function EditListForm({
     }
   };
 
+  // Handle Show the Completed Tasks on Chevron Button
+  const handleShowCompletedTasks = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.stopPropagation();
+    setShowCompletedTasks(!showCompletedTasks);
+  };
+
   // Show the modal
   useEffect(() => {
     setShowModal(true);
   }, []);
   // Handle Close the modal
   const handleCloseModal = () => {
+    console.log("fonction appelée");
+
     setShowModal(false);
     setTimeout(() => {
       setIsOpen(false);
@@ -275,41 +289,55 @@ function EditListForm({
                   : styles.completed
               }`}
             >
-              <div className={styles.description}>
-                <ChevronDown className={styles.arrow} size={12} />
-                <p className={styles.text}>
-                  {completedTasksCount} {completedTasksText}.
-                </p>
-              </div>
-              <ul className={styles.tasks}>
-                {completedTasks.map((task: Task) => (
-                  <li className={styles.task} key={task.id}>
-                    <input
-                      className={styles.checkbox}
-                      id={task.id}
-                      type="checkbox"
-                      onChange={() => handleToggleTask(task.id)}
-                      checked={task.is_completed}
-                    />
-                    <label className={styles.text}>{task.text}</label>
-                    <button
-                      type="button"
-                      className={styles.delete}
-                      onClick={() => handleDeleteTask(task.id)}
-                      aria-label="Supprimer la tâche"
-                      title="Supprimer"
-                    >
-                      <XLg className={styles.icon} size={15} />
-                    </button>
-                    <GripVertical
-                      className={styles.grip}
-                      size={20}
-                      color="#c4a1ff"
-                    />
-                    <Check className={styles.check} color="#5f6368" size={15} />
-                  </li>
-                ))}
-              </ul>
+              <button
+                className={styles.description}
+                type="button"
+                onClick={handleShowCompletedTasks}
+                aria-label="Afficher les tâches complétées."
+                title="Afficher les tâches complétées."
+              >
+                {showCompletedTasks ? (
+                  <ChevronDown className={styles.chevron} size={13} />
+                ) : (
+                  <ChevronRight className={styles.chevron} size={13} />
+                )}
+                {completedTasksCount} {completedTasksText}.
+              </button>
+              {showCompletedTasks && (
+                <ul className={styles.tasks}>
+                  {completedTasks.map((task: Task) => (
+                    <li className={styles.task} key={task.id}>
+                      <input
+                        className={styles.checkbox}
+                        id={task.id}
+                        type="checkbox"
+                        onChange={() => handleToggleTask(task.id)}
+                        checked={task.is_completed}
+                      />
+                      <label className={styles.text}>{task.text}</label>
+                      <button
+                        type="button"
+                        className={styles.delete}
+                        onClick={() => handleDeleteTask(task.id)}
+                        aria-label="Supprimer la tâche"
+                        title="Supprimer"
+                      >
+                        <XLg className={styles.icon} size={15} />
+                      </button>
+                      <GripVertical
+                        className={styles.grip}
+                        size={20}
+                        color="#c4a1ff"
+                      />
+                      <Check
+                        className={styles.check}
+                        color="#5f6368"
+                        size={15}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           )}
 

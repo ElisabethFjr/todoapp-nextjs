@@ -140,7 +140,14 @@
           display: flex;
           align-items: center;
           gap: 0.6rem;
+          width: 100%;
           padding-left: 1.6rem;
+          border-top: none;
+          color: $grey;
+          transition: all 0.3s ease-in-out;
+          &:hover {
+            color: $black;
+          }
         }
         .tasks {
           padding: 0.2rem 0.8rem 0.8rem 1.8rem;
