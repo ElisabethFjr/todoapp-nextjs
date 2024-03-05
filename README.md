@@ -14,7 +14,7 @@ https://todoapp-nextjs-2nej.vercel.app/
 - Prisma
 - Vercel
 - Postgres
-- React Beautiful DnD (Drag & Drop)
+- DnD-kit/core (Drag & Drop) https://dndkit.com/
 
 ## Preview
 
