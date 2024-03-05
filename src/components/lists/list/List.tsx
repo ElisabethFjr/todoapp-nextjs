@@ -48,7 +48,6 @@ function List({ list, isDragging, id }: ListProps) {
     useState<boolean>(false);
   const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>("");
-  console.log(isOpenPaletteColor);
 
   // ---HANDLING FUNCTIONS----
   // Handle Click to toggle the EditListForm modal
@@ -58,7 +57,6 @@ function List({ list, isDragging, id }: ListProps) {
 
   // Handle Click to toggle the PaletteColor
   const handleOpenPaletteColor = () => {
-    console.log("cliqué");
     setIsOpenPaletteColor(!isOpenPaletteColor);
   };
 
