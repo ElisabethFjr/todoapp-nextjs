@@ -147,6 +147,7 @@ function EditListForm({
     event.preventDefault();
     // Get updated title
     const updatedTitle = formTitle;
+    if (!updatedTitle.trim()) return;
     // Get all updated tasks
     const updatedTasks = formTasks.map((task: Task) => ({
       id: task.id,

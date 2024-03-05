@@ -110,7 +110,10 @@ function AddListForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
+
+    // Get the title and check if not empty
     const title = formData.get("title") as string;
+    if (!title.trim()) return;
 
     const formDataJSON = JSON.stringify({
       title: title,
