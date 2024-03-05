@@ -8,7 +8,14 @@ import TaskInProgress from "./taskInProgress/TaskInProgress";
 import TaskCompleted from "./taskCompleted/TaskCompleted";
 import PaletteColor from "@/components/modals/paletteColor/PaletteColor";
 import EditListForm from "@/components/modals/editListForm/EditListForm";
-import { GripVertical, Palette, Pencil, XLg } from "react-bootstrap-icons";
+import {
+  ChevronDown,
+  ChevronRight,
+  GripVertical,
+  Palette,
+  Pencil,
+  XLg,
+} from "react-bootstrap-icons";
 import styles from "./List.module.scss";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -48,6 +55,7 @@ function List({ list, isDragging, id }: ListProps) {
     useState<boolean>(false);
   const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>("");
+  const [showCompletedTasks, setShowCompletedTasks] = useState<boolean>(false);
 
   // ---HANDLING FUNCTIONS----
   // Handle Click to toggle the EditListForm modal
@@ -112,6 +120,17 @@ function List({ list, isDragging, id }: ListProps) {
     await updateStatusTask(list.id, taskId, updatedTask.is_completed);
   };
 
+  // Handle Delete a List
+  const handleDeleteList = async () => {
+    await deleteList(list.id);
+    router.refresh();
+  };
+
+  // Handle Show the Completed Tasks on Chevron Button
+  const handleShowCompletedTasks = () => {
+    setShowCompletedTasks(!showCompletedTasks);
+  };
+
   // Filter In Progress Tasks
   const inProgressTasks = tasks.filter((task) => !task.is_completed);
   // Filter Completed Tasks
@@ -119,12 +138,6 @@ function List({ list, isDragging, id }: ListProps) {
   const completedTasksCount = completedTasks.length; // Get the number of completed tasks
   const completedTasksText =
     completedTasksCount === 1 ? "tâche terminée" : "tâches terminées"; // Determine the appropriate text based on the number of completed tasks
-
-  // Handle Delete a List
-  const handleDeleteList = async () => {
-    await deleteList(list.id);
-    router.refresh();
-  };
 
   return (
     <li
@@ -170,39 +183,51 @@ function List({ list, isDragging, id }: ListProps) {
           <GripVertical size={20} color="#7d7d7d" />
         </button>
         <h2 className={styles.title}>{title}</h2>
-        {inProgressTasks.length > 0 && (
-          <ul className={styles.inprogress}>
-            {inProgressTasks.map((task: Task) => (
-              <TaskInProgress
-                key={task.id}
-                task={task}
-                handleToggleTask={handleToggleTask}
-              />
-            ))}
-          </ul>
-        )}
-        {completedTasks.length > 0 && (
-          <>
-            <p
-              className={`${
-                completedTasksCount === tasks.length
-                  ? `${styles.description} ${styles.reset}`
-                  : styles.description
-              }`}
-            >
-              {completedTasksCount} {completedTasksText}.
-            </p>
-            <ul className={styles.completed}>
-              {completedTasks.map((task: Task) => (
-                <TaskCompleted
+        <div className={styles.wrapper}>
+          {inProgressTasks.length > 0 && (
+            <ul className={styles.inprogress}>
+              {inProgressTasks.map((task: Task) => (
+                <TaskInProgress
                   key={task.id}
                   task={task}
                   handleToggleTask={handleToggleTask}
                 />
               ))}
             </ul>
-          </>
-        )}
+          )}
+          {completedTasks.length > 0 && (
+            <>
+              <button
+                className={`${
+                  completedTasksCount === tasks.length
+                    ? `${styles.description} ${styles.reset}`
+                    : styles.description
+                }`}
+                onClick={handleShowCompletedTasks}
+                aria-label="Afficher les tâches complétées."
+                title="Afficher les tâches complétées."
+              >
+                {showCompletedTasks ? (
+                  <ChevronDown className={styles.chevron} size={13} />
+                ) : (
+                  <ChevronRight className={styles.chevron} size={13} />
+                )}
+                {completedTasksCount} {completedTasksText}.
+              </button>
+              {showCompletedTasks && (
+                <ul className={styles.completed}>
+                  {completedTasks.map((task: Task) => (
+                    <TaskCompleted
+                      key={task.id}
+                      task={task}
+                      handleToggleTask={handleToggleTask}
+                    />
+                  ))}
+                </ul>
+              )}
+            </>
+          )}
+        </div>
       </div>
       {isOpenPaletteColor && (
         <PaletteColor

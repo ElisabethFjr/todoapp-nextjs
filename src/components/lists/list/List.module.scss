@@ -33,6 +33,7 @@
     box-shadow: $shadow;
     padding-bottom: 5rem;
     transition: box-shadow 0.3s ease-in-out;
+
     &.dragging {
       .grab {
         opacity: 0;
@@ -64,21 +65,32 @@
       font-weight: 600;
     }
 
-    // InProgress & Completed Section
-    .inprogress,
-    .completed {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      padding: 0.8rem;
-    }
-    .description {
-      padding: 0.8rem 0.8rem 0 0.8rem;
-      border-top: 1px solid $black;
-      color: $grey;
-    }
-    .reset {
-      border-top: none;
+    // Wrapper Content
+    .wrapper {
+      // InProgress & Completed Section
+      .inprogress,
+      .completed {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.8rem;
+      }
+      .description {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+        padding: 0.8rem 0.8rem 0 0.8rem;
+        border-top: 1px solid $black;
+        color: $grey;
+        transition: all 0.3s ease-in-out;
+        &:hover {
+          color: $black;
+        }
+      }
+      .reset {
+        border-top: none;
+      }
     }
   }
 
@@ -88,11 +100,12 @@
     z-index: 2;
     opacity: 0;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     width: 80%;
+    height: 40px;
     bottom: 0.6rem;
-    gap: 1rem;
+    gap: 3rem;
     color: $black;
     transition: all 0.3s ease-in-out;
     .icon {
