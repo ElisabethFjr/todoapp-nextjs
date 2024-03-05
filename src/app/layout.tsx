@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   title: "ToDoApp",
   description:
     "ToDoApp is a List management application created with Next.js and Prisma.",
+  keywords:
+    "ToDo, To Do List, ToDoApp, List, NextJs, FAUJOUR Elisabeth, Web Dev, Développeur web, Prisma",
+  metadataBase: new URL("https://todoapp-nextjs-2nej.vercel.app"),
 };
 
 export default function RootLayout({
