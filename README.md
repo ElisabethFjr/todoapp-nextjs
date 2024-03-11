@@ -2,7 +2,7 @@
 
 ## Description
 
-Here is a simple ToDo List App with Drag&Drop option, built whith NextJS and the ORM Prisma.
+Here is a simple ToDo List App with Drag&Drop option, built whith Next.js and the ORM Prisma.
 
 ## Link
 
@@ -10,7 +10,7 @@ https://todoapp-nextjs-2nej.vercel.app/
 
 ## Technos
 
-- NextJS
+- Next.js
 - Prisma
 - Vercel
 - Postgres
