@@ -29,6 +29,7 @@ interface EditListFormProps {
   editListModalRef: RefObject<HTMLDivElement>;
   setTasks: Dispatch<SetStateAction<Task[]>>;
   setTitle: Dispatch<SetStateAction<string>>;
+  selectedColor: string;
 }
 
 function EditListForm({
@@ -38,6 +39,7 @@ function EditListForm({
   editListModalRef,
   setTasks,
   setTitle,
+  selectedColor,
 }: EditListFormProps) {
   //---VARIABLES----
   // --- HOOKS ---
@@ -197,7 +199,7 @@ function EditListForm({
         className={`${styles.container} ${
           list.color ? styles.container : styles.white
         } ${showModal ? styles.openAnimation : styles.closeAnimation}`}
-        style={{ backgroundColor: list.color }}
+        style={{ backgroundColor: selectedColor }}
         ref={editListModalRef}
       >
         <form

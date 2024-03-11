@@ -54,7 +54,7 @@ function List({ list, isDragging, id }: ListProps) {
   const [isOpenEditListModal, setIsOpenEditListModal] =
     useState<boolean>(false);
   const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
-  const [selectedColor, setSelectedColor] = useState<string>("");
+  const [selectedColor, setSelectedColor] = useState<string>(list.color);
   const [showCompletedTasks, setShowCompletedTasks] = useState<boolean>(false);
 
   // ---HANDLING FUNCTIONS----
@@ -246,6 +246,7 @@ function List({ list, isDragging, id }: ListProps) {
           editListModalRef={editListModalRef}
           setTasks={setTasks}
           setTitle={setTitle}
+          selectedColor={selectedColor}
         />
       )}
     </li>
