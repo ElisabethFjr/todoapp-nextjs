@@ -8,6 +8,7 @@ import { addList } from "@/lib/api";
 import { GripVertical, Plus, XLg } from "react-bootstrap-icons";
 import { Task } from "@/@types";
 import styles from "./AddListForm.module.scss";
+import Loader from "@/components/loader/Loader";
 
 function AddListForm() {
   // --- HOOKS ---
@@ -19,6 +20,7 @@ function AddListForm() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [taskValue, setTaskValue] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Declaration task input ref
   const taskInputRef = useRef<HTMLInputElement>(null);
@@ -109,6 +111,7 @@ function AddListForm() {
   // Handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
     const formData = new FormData(event.currentTarget);
 
     // Get the title and check if not empty
@@ -125,6 +128,7 @@ function AddListForm() {
     // Close modal and remove search param
     await handleCloseModal();
     router.refresh();
+    await setIsLoading(false);
   };
 
   return (
@@ -203,8 +207,11 @@ function AddListForm() {
             ))}
           </ul>
           {/* Button Form Submission */}
-          <button className={styles.button} type="submit">
-            Créer
+          <button
+            className={`${styles.button} ${isLoading ? styles.loading : ""}`}
+            type="submit"
+          >
+            {isLoading ? <Loader /> : "Créer"}
           </button>
         </form>
         <button

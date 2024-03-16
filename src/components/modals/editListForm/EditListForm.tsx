@@ -21,6 +21,7 @@ import {
 } from "react-bootstrap-icons";
 import { List, Task } from "@/@types";
 import styles from "./EditListForm.module.scss";
+import Loader from "@/components/loader/Loader";
 
 interface EditListFormProps {
   list: List;
@@ -51,8 +52,7 @@ function EditListForm({
   const [formTasks, setFormTasks] = useState<Task[]>(list.tasks);
   const [showModal, setShowModal] = useState(false);
   const [showCompletedTasks, setShowCompletedTasks] = useState<boolean>(false);
-  console.log("completed", showCompletedTasks);
-  console.log("modal", showModal);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Declaration task input ref
   const taskInputRef = useRef<HTMLInputElement>(null); // Ref for task input
@@ -103,7 +103,6 @@ function EditListForm({
     const updatedTasks = formTasks.map((task) =>
       task.id === taskId ? { ...task, is_completed: !task.is_completed } : task
     );
-    console.log(updatedTasks);
     setFormTasks(updatedTasks);
   };
 
@@ -148,10 +147,9 @@ function EditListForm({
   useEffect(() => {
     setShowModal(true);
   }, []);
+
   // Handle Close the modal
   const handleCloseModal = () => {
-    console.log("fonction appelée");
-
     setShowModal(false);
     setTimeout(() => {
       setIsOpen(false);
@@ -161,6 +159,7 @@ function EditListForm({
   // Handle form submission
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoading(true);
     // Get updated title
     const updatedTitle = formTitle;
     if (!updatedTitle.trim()) return;
@@ -183,6 +182,7 @@ function EditListForm({
     // Close the modal and then refresh the page
     await handleCloseModal();
     router.refresh();
+    await setIsLoading(false);
   };
 
   // Filter In Progress Tasks
@@ -344,8 +344,11 @@ function EditListForm({
           )}
 
           {/* Button Form Submission */}
-          <button className={styles.button} type="submit">
-            Valider
+          <button
+            className={`${styles.button} ${isLoading ? styles.loading : ""}`}
+            type="submit"
+          >
+            {isLoading ? <Loader /> : "Valider"}
           </button>
         </form>
         <button
