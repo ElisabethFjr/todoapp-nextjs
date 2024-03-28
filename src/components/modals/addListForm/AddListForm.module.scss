@@ -125,7 +125,7 @@
           opacity: 0;
         }
       }
-
+      // Submit Button
       .button {
         display: flex;
         justify-content: center;
@@ -151,6 +151,7 @@
         }
       }
     }
+    // Close Modal Button
     .close {
       position: absolute;
       z-index: 99;
@@ -160,6 +161,21 @@
       border: 1px solid transparent;
       border-radius: 50%;
       transition: all 0.3s ease-in-out;
+      &:hover {
+        background-color: $iconHover;
+      }
+    }
+    // Open PaletteColor Button
+    .palette {
+      position: absolute;
+      z-index: 99;
+      bottom: 0.6rem;
+      left: 0.8rem;
+      padding: 0.5rem;
+      border-radius: 50%;
+      border: transparent;
+      transition: all 0.3s ease-in-out;
+      color: $black;
       &:hover {
         background-color: $iconHover;
       }

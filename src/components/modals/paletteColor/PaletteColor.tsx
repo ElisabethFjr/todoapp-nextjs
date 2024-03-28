@@ -5,6 +5,7 @@ import { nanoid } from "nanoid";
 import { updateColorList } from "@/lib/api";
 import styles from "./PaletteColor.module.scss";
 import { CheckCircleFill } from "react-bootstrap-icons";
+import { log } from "console";
 
 const colors = [
   { color: "#ffffff", title: "Défault" },
@@ -18,12 +19,14 @@ const colors = [
 interface PaletteColorProps {
   onSelectColor: (color: string) => void;
   selectedColor: string;
-  listId: string;
+  leftPosition?: boolean | null;
+  listId?: string | null;
 }
 
 function PaletteColor({
   onSelectColor,
   selectedColor,
+  leftPosition,
   listId,
 }: PaletteColorProps) {
   const [selected, setSelected] = useState<string>(selectedColor);
@@ -31,12 +34,16 @@ function PaletteColor({
   const handleColorChange = async (color: string) => {
     setSelected(color);
     onSelectColor(color);
-    const colorJSON = JSON.stringify({ color });
-    await updateColorList(listId, colorJSON);
+    if (listId) {
+      const colorJSON = JSON.stringify({ color });
+      await updateColorList(listId, colorJSON);
+    }
   };
 
   return (
-    <form className={styles.form}>
+    <form
+      className={`${styles.form} ${leftPosition ? styles.leftPosition : ""}`}
+    >
       <ul className={styles.colors}>
         {colors.map((color) => (
           <li className={styles.color} key={nanoid()}>

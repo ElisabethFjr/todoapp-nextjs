@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import z from "zod";
 import { Task, List } from "@/@types";
-import TaskInProgress from "@/components/lists/list/taskInProgress/TaskInProgress";
 
 // GET "/api/list" All Lists with Tasks
 export async function GET(req: NextRequest) {
@@ -89,6 +88,7 @@ export async function POST(req: NextRequest) {
   // Validation schema
   const FormSchema = z.object({
     title: z.string(),
+    color: z.string().nullable(),
     tasks: z
       .array(
         z.object({
@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { title, tasks } = body;
+    const { title, color, tasks } = body;
 
     // Checking validation schemas
     const validationResult = FormSchema.safeParse(body);
@@ -134,6 +134,7 @@ export async function POST(req: NextRequest) {
     const newList = await prisma.list.create({
       data: {
         title,
+        color,
         tasks: {
           createMany: {
             data: tasks
