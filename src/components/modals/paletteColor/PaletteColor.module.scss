@@ -9,6 +9,9 @@
   background-color: $white;
   border: 1px solid $black;
   box-shadow: $shadow;
+  &.leftPosition {
+    left: 0;
+  }
   .colors {
     display: flex;
     justify-content: space-between;

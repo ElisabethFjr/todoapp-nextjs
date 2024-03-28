@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
 import DOMPurify from "dompurify";
 import { addList } from "@/lib/api";
-import { GripVertical, Plus, XLg } from "react-bootstrap-icons";
+import { GripVertical, Palette, Plus, XLg } from "react-bootstrap-icons";
 import { Task } from "@/@types";
 import styles from "./AddListForm.module.scss";
 import Loader from "@/components/loader/Loader";
+import PaletteColor from "../paletteColor/PaletteColor";
 
 function AddListForm() {
   // --- HOOKS ---
@@ -21,6 +22,8 @@ function AddListForm() {
   const [taskValue, setTaskValue] = useState<string>("");
   const [showModal, setShowModal] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [selectedColor, setSelectedColor] = useState<string>("#ffffff");
+  const [isOpenPaletteColor, setIsOpenPaletteColor] = useState<boolean>(false);
 
   // Declaration task input ref
   const taskInputRef = useRef<HTMLInputElement>(null);
@@ -32,6 +35,15 @@ function AddListForm() {
     setTitle(sanitizedValue);
   };
 
+  // Handle Click to toggle the PaletteColor
+  const handleOpenPaletteColor = () => {
+    setIsOpenPaletteColor(!isOpenPaletteColor);
+  };
+
+  // Handle Click to select color in the PaletteColor
+  const handleSelectColor = (color: string) => {
+    setSelectedColor(color);
+  };
   // Handle Change task input value
   const handleTaskChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const sanitizedValue = DOMPurify.sanitize(event.target.value);
@@ -120,6 +132,7 @@ function AddListForm() {
 
     const formDataJSON = JSON.stringify({
       title: title,
+      color: selectedColor,
       tasks: tasks && tasks.length > 0 ? tasks : null,
     });
 
@@ -137,6 +150,7 @@ function AddListForm() {
         className={`${styles.container} ${
           showModal ? styles.openAnimation : styles.closeAnimation
         }`}
+        style={{ backgroundColor: selectedColor }}
       >
         <form
           className={styles.form}
@@ -223,6 +237,20 @@ function AddListForm() {
         >
           <XLg className={styles.icon} size={18} />
         </button>
+        <button
+          className={styles.palette}
+          type="button"
+          onClick={handleOpenPaletteColor}
+        >
+          <Palette size={20} title="Options d'arrière plan" />
+        </button>
+        {isOpenPaletteColor && (
+          <PaletteColor
+            onSelectColor={handleSelectColor}
+            selectedColor={selectedColor}
+            leftPosition={true}
+          />
+        )}
       </div>
     </div>
   );
