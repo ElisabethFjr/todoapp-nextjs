@@ -2,7 +2,7 @@
 
 ## Description
 
-Here is a simple ToDo List App with Drag&Drop option, built whith Next.js and the ORM Prisma.
+Here is a simple ToDo List App with Drag&Drop option, built with Next.js and the ORM Prisma.
 
 ## Link
 
